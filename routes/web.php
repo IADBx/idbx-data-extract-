@@ -33,6 +33,14 @@ Route::group(['middleware' => 'auth'], function () {
 
 	Route::apiResource('problems', 'ProblemController');
 
+	Route::get('course_dashboard/{id}', ['as' => 'course.dashboard', 'uses' => 'CourseController@dashboard']);
+	#Route::get('course_dashboard', ['as' => 'course.dashboard', 'uses' => 'CourseController@surveyInitialTest']);
+
+	Route::get('survey_initial', ['as' => 'survey.initial', 'uses' => 'CourseController@surveyInitial']);
+	Route::get('survey_satisfaction', ['as' => 'survey.satisfaction', 'uses' => 'CourseController@surveySatisfaction']);
+	Route::get('survey_mqi', ['as' => 'survey.mqi', 'uses' => 'CourseController@surveyMqi']);
+
+
 	Route::get('table-list', function () {
 		return view('pages.table_list');
 	})->name('table');
