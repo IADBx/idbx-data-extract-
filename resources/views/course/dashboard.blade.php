@@ -221,7 +221,23 @@
             </div>
             <div class="row justify-content-md-center">              
                 <div id="question_11" ></div>              
-            </div>                                              
+            </div> 
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>6.	¿Tienes algún tipo de discapacidad visual, auditiva o motora que te limite aprovechar los contenidos del curso?
+</strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 14</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>                                          
+            </div>
+            <div class="row justify-content-md-center">              
+                <div id="question_14" ></div>              
+            </div>                                                          
 
           </div>
         </div>
@@ -261,7 +277,7 @@
                 </div>                                          
               </div>
               <div class="row justify-content-md-center">              
-                  <div id="final_question_2" style="width:400x;height:400px;"></div>              
+                  <div id="final_question_2" ></div>              
               </div>           
               <div class="row">
                 <div class="col-md-12">
@@ -756,6 +772,87 @@
       $.ajax({
            type:'GET',
            url:"{{ route('survey.initial') }}",
+           data:{course_id:course_id,question:14},
+           success:function(data_question){               
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['percentage_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_14', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
+
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_14', data,layout);
+              }
+           }
+      });
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:1},
            success:function(data_question){  
              console.log(data_question)                          
@@ -782,10 +879,23 @@
                 type: 'bar',
                 x: data_question['average_question'],
                 y: data_question['display_name'],
-                orientation: 'h'
+                orientation: 'h',
+                marker:{color: ['#2ca02c', '#1f77b4']},
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],                
+                
               }];
 
-          Plotly.newPlot('final_question_2', data);
+              var layout = {
+                width: 900,
+                height: 400,
+                yaxis: {
+                  automargin: true
+                  }              
+                };              
+
+          Plotly.newPlot('final_question_2', data,layout);
 
 
 

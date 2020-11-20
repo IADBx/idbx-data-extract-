@@ -293,7 +293,8 @@ class CourseController extends Controller
         INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
         INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
         INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
-        where ch.course_id='".$request->get('course_id')."' and q.question_parent='".$request->get('question')."' and v.poll='3'";            
+        where ch.course_id='".$request->get('course_id')."' and q.question_parent='".$request->get('question')."' and v.poll='3'
+         order by q.display_name desc";            
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
         $answers_display_name=[];
