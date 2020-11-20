@@ -22,12 +22,12 @@ class CourseController extends Controller
         $search =  $request->input('q');
         #dd($search);
         if($search!=""){
-            $courses=Course::where('name', 'ilike', '%'.trim($search).'%')->orderBy('name', 'asc')->paginate(15);
+            $courses=Course::where('name', 'ilike', '%'.trim($search).'%')->orderBy('name', 'asc')->paginate(25);
             #dd($courses);
 
         }
         else{
-            $courses = Course::paginate(15);
+            $courses = Course::paginate(25);
         }
         return View('course.index')->with('data',$courses);
     }
