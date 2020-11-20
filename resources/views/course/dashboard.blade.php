@@ -346,7 +346,7 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:8},
            success:function(data_question){  
-             alert(data_question['old_data']);
+             
               if(data_question['old_data']==0){
                 var trace1 = {
                 x: data_question['display_name'],
@@ -431,7 +431,7 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:9},
            success:function(data_question){  
-             alert(data_question['old_data']);
+             
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -514,7 +514,7 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:10},
            success:function(data_question){  
-             alert(data_question['old_data']);
+            
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -595,8 +595,7 @@
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:7},
-           success:function(data_question){  
-             alert(data_question['old_data']);
+           success:function(data_question){              
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -677,8 +676,7 @@
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:11},
-           success:function(data_question){  
-             alert(data_question['old_data']);
+           success:function(data_question){               
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
