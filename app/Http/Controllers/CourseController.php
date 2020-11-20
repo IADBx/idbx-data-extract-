@@ -53,9 +53,24 @@ class CourseController extends Controller
         $participants=round($report_type->avg('participant'));
         $certificates=round($report_type->avg('certificate')); 
         $countries=round($report_type->avg('country'));
-        $report_type = array($registered, $registered_in_date,$participants,$certificates,$countries);       
+        $report_type = array($registered, $registered_in_date,$participants,$certificates,$countries); 
+
+        $registered=0;
+        $registered_in_date=0;
+        $participants=0;
+        $certificates=0;              
+        $report_all = Report::where('group_name','=',$report->group_name)->where('end_date',"<=",$report->end_date)->get();
+        $registered=round($report_all->avg('registrado'));
+        $registered_in_date=round($report_all->avg('in_date'));
+        $participants=round($report_all->avg('participant'));
+        $certificates=round($report_all->avg('certificate'));
+        $countries=round($report_all->avg('country'));
+        $report_group_all = array($registered, $registered_in_date,$participants,$certificates,$countries);
+
+
+
         #dd($registrados);
-        return view('course.dashboard', compact('report','report_group','report_type'));
+        return view('course.dashboard', compact('report','report_group','report_type','report_group_all'));
     }    
 
     public function surveyMqi(Request $request)
@@ -70,31 +85,203 @@ class CourseController extends Controller
 
     public function surveyInitial(Request $request)
     {
-        $sql = "select an.display_name,d.total,d.percentage from control_panel_course_answers_students d
+        $answers_display_name_old=[];
+        $answers_total_old=[];
+        $answers_percentage_old=[];  
+        $sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
+        $course = DB::connection('pgsql')->select($sql);
+        $course_collection=collect($course);
+        $edition_course=$course_collection->first()->edition;
+        $start_date=$course_collection->first()->start_date;
+        $time = strtotime($start_date);
+        $year_course = date('Y',$time);
+
+        if($year_course>=2020){
+            $sql = "select ta.display_name_es as display_name,d.total,d.percentage from control_panel_course_answers_students d
+            INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
+            INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
+            inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
+            INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
+            INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
+            INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
+            where ch.course_id='".$request->get('course_id')."' and q.question_id='".$request->get('question')."' and v.poll='1' 
+            order by ta.display_name_es asc";    
+    
+                  
+            $answers = DB::connection('pgsql')->select($sql);  
+            $answers_collection=collect($answers);
+            $sample=$answers_collection->sum('total');
+            $answers_display_name=[];
+            $answers_total=[];
+            $answers_percentage=[];
+    
+    
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name,$answer->display_name);
+                array_push($answers_total,$answer->total);
+                array_push($answers_percentage,round($answer->percentage,2));
+            }
+
+        } else{
+            $sql ="select ta.display_name_es,d.total,d.percentage from control_panel_course_answers_students_old d
+            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            INNER JOIN metadata_courses c on(d.course_id=c.id)
+            where d.poll=1
+            and c.studio_id_1='".$request->get('course_id')."'
+            and tq.question_id='".$request->get('question')."'
+            ORDER BY ta.display_name_es asc";
+
+            $answers = DB::connection('pgsql')->select($sql); 
+            $answers_collection=collect($answers);
+            $sample=$answers_collection->sum('total');
+            $answers_display_name=[];
+            $answers_total=[];
+            $answers_percentage=[];
+
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name,$answer->display_name_es);
+                array_push($answers_total,$answer->total);
+                array_push($answers_percentage,round($answer->percentage,2));
+            }
+
+        }  
+
+        $sql="select * from metadata_courses
+        where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and start_date < (select start_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')";
+        $answers = DB::connection('pgsql')->select($sql); 
+        $answers_collection=collect($answers);
+
+        if($answers_collection->count()>0){
+            $old_data= 1;
+            /*
+            $sql ="select sum(d.total) as total,ta.display_name_es as display_name from control_panel_course_answers_students_old d
+            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            INNER JOIN metadata_courses c on(d.course_id=c.id)
+            where d.poll=1
+            and c.\"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+            and c.start_date < (select start_date from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+            and tq.question_id='".$request->get('question')."'
+            GROUP BY ta.id,ta.display_name_es
+            ORDER BY ta.id asc";    
+            */
+            $sql="Select display_name,sum(total) as total
+            from
+            ((select sum(d.total) as total,ta.display_name_es as display_name 
+            from control_panel_course_answers_students_old d
+            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            INNER JOIN metadata_courses c on(d.course_id=c.id)
+            where d.poll=1
+            and trim(c.\"Course_Name_AllEditions\")=trim((select \"Course_Name_AllEditions\" from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."'))
+            and c.start_date < (select start_date from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses 
+                where studio_id_1='".$request->get('course_id')."'))
+            and tq.question_id='".$request->get('question')."'
+            GROUP BY ta.id,ta.display_name_es
+            ORDER BY ta.id asc)
+            UNION ALL
+            (select sum(CAST (d.total AS INTEGER)) as total,ta.display_name_es as display_name  
+            from control_panel_course_answers_students d
+            INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
+            INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
+            inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
+            INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
+            INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
+            INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
+            INNER JOIN metadata_courses c on(ch.course_id=c.studio_id_1)
+            where  q.question_id='".$request->get('question')."' and v.poll='1'
+            and trim(c.\"Course_Name_AllEditions\")=trim((select \"Course_Name_AllEditions\" from metadata_courses 
+                where studio_id_1='".$request->get('course_id')."'))
+            and c.start_date < (select start_date from metadata_courses 
+                where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses 
+                where studio_id_1='".$request->get('course_id')."'))
+            GROUP BY ta.id,ta.display_name_es
+            ORDER BY ta.id asc)) as data
+            GROUP BY display_name
+            order by display_name ASC";
+
+            $answers = DB::connection('pgsql')->select($sql); 
+            $answers_collection=collect($answers);
+            $sample=$answers_collection->sum('total');          
+
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name_old,$answer->display_name);
+                array_push($answers_total_old,$answer->total);
+                array_push($answers_percentage_old,round(($answer->total/$sample)*100,2));
+            }        
+
+        }else{
+            $old_data= 0;
+        }
+
+        $sql="Select display_name,sum(total) as total
+        from
+        ((select sum(d.total) as total,ta.display_name_es as display_name 
+        from control_panel_course_answers_students_old d
+        INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
+        INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+        INNER JOIN metadata_courses c on(d.course_id=c.id)
+        where d.poll=1
+        and trim(c.language)=trim((select language from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= (select end_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=trim((select type from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."'))
+        and tq.question_id='".$request->get('question')."'
+        and c.studio_id_1 not in('".$request->get('course_id')."')
+        GROUP BY ta.id,ta.display_name_es
+        ORDER BY ta.id asc)
+        UNION ALL
+        (select sum(CAST (d.total AS INTEGER)) as total,ta.display_name_es as display_name  
+        from control_panel_course_answers_students d
         INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
         INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
+        INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
         inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
         INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
         INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
         INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
-        where ch.course_id='".$request->get('course_id')."' and q.question_id='".$request->get('question')."' and v.poll='1'";    
-
-              
-        $answers = DB::connection('pgsql')->select($sql);  
+        INNER JOIN metadata_courses c on(ch.course_id=c.studio_id_1)
+        where  q.question_id='".$request->get('question')."' and v.poll='1'
+        and trim(c.language)=trim((select language from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= (select end_date from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=trim((select type from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."'))
+        and c.studio_id_1 not in('".$request->get('course_id')."')
+        GROUP BY ta.id,ta.display_name_es
+        ORDER BY ta.id asc)) as data
+        GROUP BY display_name
+        order by display_name ASC";
+        $answers = DB::connection('pgsql')->select($sql); 
         $answers_collection=collect($answers);
         $sample=$answers_collection->sum('total');
-        $answers_display_name=[];
-        $answers_total=[];
-        $answers_percentage=[];
+        $answers_display_name_historical=[];
+        $answers_total_historical=[];
+        $answers_percentage_historical=[];            
 
         foreach ($answers_collection as $answer) {
-            array_push($answers_display_name,$answer->display_name);
-            array_push($answers_total,$answer->total);
-            array_push($answers_percentage,$answer->percentage);
-        }
+            array_push($answers_display_name_historical,$answer->display_name);
+            array_push($answers_total_historical,$answer->total);
+            array_push($answers_percentage_historical,round(($answer->total/$sample)*100,2));
+        } 
+
         
-        
-        return response()->json(['display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage]);
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data]);
         
     }
 

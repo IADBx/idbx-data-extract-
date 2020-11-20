@@ -8,6 +8,7 @@
         <div class="card">
           <div class="card-header card-header-primary">
             <h4 class="card-title ">{{$report->name}}</h4>
+            <h4 class="card-title "> Inicio {{$report->start_date}}</h4>
             <input type="hidden" id="course_id" name="course_id" value='{{$report->course_id}}'>
           </div>
           <div class="card-body"> 
@@ -29,10 +30,15 @@
                 <thead>
                     <tr>
                         <th class="text-center">Indicador</th>
-                        <th>Edición {{$report->edition}} Inicio {{$report->start_date}}</th>
+                        <th>Edición {{$report->edition}} </th>
                         <?php if($report_group[0]>0){?>
                           <th>Promedio ediciones anteriores</th>
                         <?php }?>
+
+                        <?php if($report_group[0]>0){?>
+                          <th>Promedio todas las ediciones hasta la edición {{$report->edition}}</th>
+                        <?php }?>                        
+
                         <th>Promedio histórico<br> MOOCs finalizados en español<br> del programa IDBx*</th>
                     </tr>
                 </thead>
@@ -40,28 +46,43 @@
                     <tr>
                         <td>Registrados totales <sup>1</sup> </td>
                         <td>{{$report->registrado}}</td>
+
                         <?php if($report_group[0]>0){ ?>
-                          <td>{{$report_group[0]}}</td>
-                          
+                          <td>{{$report_group[0]}}</td>                          
                         <?php }?>
+
+                        <?php if($report_group[0]>0){ ?>
+                          <td>{{$report_group_all[0]}}</td>                          
+                        <?php }?>
+
                         <td>{{$report_type[0]}}</td>
                     </tr>
                     <tr>
                       <td>Registrados a la fecha de cierre <sup>2</sup></td>
                       <td>{{$report->in_date}}</td>
+
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group[1]}}</td>
-                      
+                        <td>{{$report_group[1]}}</td>                                              
                       <?php } ?>
+
+                      <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group_all[1]}}</td>                                              
+                      <?php } ?>
+
                       <td>{{$report_type[1]}}</td>
                     </tr>
                     <tr>
                       <td>Países representados   <sup>3</sup></td>
                       <td>{{$report->country}}</td>
+
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group[4]}}</td>
-                      
+                        <td>{{$report_group[4]}}</td>                      
                       <?php }  ?>
+
+                      <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group_all[4]}}</td>                      
+                      <?php }  ?>
+
                       <td>{{$report_type[4]}}</td>
                     </tr>
                     <tr>
@@ -70,6 +91,9 @@
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[2]}}<br>({{round(($report_group[2]/$report_group[0])*100,2)}}%)</td>
                       <?php }?>
+                      <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group_all[2]}}<br>({{round(($report_group_all[2]/$report_group_all[0])*100,2)}}%)</td>
+                      <?php }?>                      
                       <td>{{$report_type[2]}}<br>({{round(($report_type[2]/$report_type[0])*100,2)}}%)</td>
                     </tr>
                     <tr>
@@ -77,14 +101,21 @@
                       <td></td>
                       <td></td>
                       <td></td>
+                      <td></td>
                     </tr>
                     <tr>
                       <td>Certificados <sup>6</sup>  <br>(% de participantes al cierre)</td>
-                      <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->in_date)*100,2)}}%)</td>
+                      <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->participant)*100,2)}}%)</td>
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group[3]}}<br>({{round(($report_group[3]/$report_group[1])*100,2)}}%)</td>
+                        <td>{{$report_group[3]}}<br>({{round(($report_group[3]/$report_group[2])*100,2)}}%)</td>
                         <?php }?>
-                      <td>{{$report_type[3]}}<br>({{round(($report_type[3]/$report_type[1])*100,2)}}%)</td>
+
+                        <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group_all[3]}}<br>({{round(($report_group_all[3]/$report_group_all[2])*100,2)}}%)</td>
+                        <?php }?>
+
+
+                      <td>{{$report_type[3]}}<br>({{round(($report_type[3]/$report_type[2])*100,2)}}%)</td>
                     </tr>                                                                                
 
                 </tbody>
@@ -132,7 +163,7 @@
               </div>                                          
             </div>
             <div class="row justify-content-md-center">              
-                <div id="question_8" style="width:300x;height:400px;"></div>              
+                <div id="question_8"></div>              
             </div>
             <br><br>
             <div class="row">
@@ -147,21 +178,21 @@
               </div>                                          
             </div>
             <div class="row justify-content-md-center">              
-                <div id="question_9" style="width:300x;height:400px;"></div>              
+                <div id="question_9" ></div>              
             </div>     
             <div class="row">
               <div class="col-md-12">
                 <h4><strong>3.	Nivel de educación de los registrados</strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 9</strong></h4>                
+                <h4><strong>Fuente: Encuesta inicial, pregunta 10</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
             <div class="row justify-content-md-center">              
-                <div id="question_10" style="width:300x;height:400px;"></div>              
+                <div id="question_10" ></div>              
             </div>   
             <div class="row">
               <div class="col-md-12">
@@ -175,7 +206,7 @@
               </div>                                          
             </div>
             <div class="row justify-content-md-center">              
-                <div id="question_7" style="width:300x;height:400px;"></div>              
+                <div id="question_7" ></div>              
             </div> 
             <div class="row">
               <div class="col-md-12">
@@ -189,7 +220,7 @@
               </div>                                          
             </div>
             <div class="row justify-content-md-center">              
-                <div id="question_11" style="width:300x;height:400px;"></div>              
+                <div id="question_11" ></div>              
             </div>                                              
 
           </div>
@@ -315,50 +346,165 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:8},
            success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
-                y: data_question['percentage'],
+             alert(data_question['old_data']);
+              if(data_question['old_data']==0){
+                var trace1 = {
                 x: data_question['display_name'],
-                text: data_question['percentage'],
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
-              }];
-              var layout = {                
-                autosize: true,
-                showlegend: false,
-                yaxis: {
-                  title: '% de encuestados',
-                  tickvals: [10, 20, 30, 40,50,60,70,80,90,100],
-                  tickmode: 'array',
-                  automargin: true,
-                  titlefont: { size:20 },
-                },                              
+                text: data_question['percentage'],
               };
 
-          Plotly.newPlot('question_8', data,layout);
+              var trace2 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
 
 
+               Plotly.newPlot('question_8', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
 
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_8', data,layout);
+              }
            }
       });
+
+
+
 
       $.ajax({
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:9},
            success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
-                y: data_question['percentage'],
+             alert(data_question['old_data']);
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['percentage_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_9', data,layout);
+              } else{
+                var trace1 = {
                 x: data_question['display_name'],
-              }];
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
 
-          Plotly.newPlot('question_9', data);
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+              };
 
 
-
+               Plotly.newPlot('question_9', data,layout);
+              }
            }
       });
 
@@ -368,35 +514,162 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:10},
            success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
-                y: data_question['percentage'],
+             alert(data_question['old_data']);
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['percentage_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_10', data,layout);
+              } else{
+                var trace1 = {
                 x: data_question['display_name'],
-              }];
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
 
-          Plotly.newPlot('question_10', data);
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
 
 
-
+               Plotly.newPlot('question_10', data,layout);
+              }
            }
       });
+
       $.ajax({
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:7},
            success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
-                y: data_question['percentage'],
+             alert(data_question['old_data']);
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['percentage_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_7', data,layout);
+              } else{
+                var trace1 = {
                 x: data_question['display_name'],
-              }];
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
 
-          Plotly.newPlot('question_7', data);
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
 
 
-
+               Plotly.newPlot('question_7', data,layout);
+              }
            }
       });
 
@@ -405,17 +678,80 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:11},
            success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
-                y: data_question['percentage'],
+             alert(data_question['old_data']);
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['percentage_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('question_11', data,layout);
+              } else{
+                var trace1 = {
                 x: data_question['display_name'],
-              }];
+                y: data_question['percentage'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
+              };
 
-          Plotly.newPlot('question_11', data);
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['percentage_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['percentage_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
 
 
-
+               Plotly.newPlot('question_11', data,layout);
+              }
            }
       });
 
