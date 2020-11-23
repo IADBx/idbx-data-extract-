@@ -16,6 +16,6 @@ class Course extends Model
 
     public function chapters()
     {
-        return $this->hasMany('App\Chapter');
+        return $this->hasMany('App\Chapter','course_id');
     }
 }
