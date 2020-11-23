@@ -47,8 +47,8 @@
                       <td>{{$course->name}}</td>
                       <td>
                       
-                        <a href="{{ route('courses.show',$course->id) }}" class="btn btn-warning">Structure</a>
-                        <a href="{{ route('course.dashboard',$course->id) }}" class="btn btn-primary">View</a>
+                        <a href="{{ route('courses.show',$course->studio_id_1) }}" class="btn btn-warning">Structure</a>
+                        <a href="{{ route('course.dashboard',$course->studio_id_1) }}" class="btn btn-primary">View</a>
                         
                       </td>
 
