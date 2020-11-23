@@ -6,12 +6,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Course extends Model
 {
-    protected $table = 'control_panel_course';
-    protected $primaryKey = 'id';
+    protected $table = 'metadata_courses';
+    protected $primaryKey = 'studio_id_1';
     public $keyType = 'string';
     protected $connection = 'pgsql';
     protected $fillable = [
-        'name', 'id','is_active',
+        'name', 'studio_id_1','is_active',
     ];
 
     public function chapters()

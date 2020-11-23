@@ -36,7 +36,8 @@ class CourseController extends Controller
     {    
         
         $report=Report::where('course_id','=',$id)->firstOrFail();                
-        $report_all = Report::where('group_name','=',$report->group_name)->where('end_date',"<",$report->start_date)->get();
+        
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
         $participants=round($report_all->avg('participant'));
@@ -71,7 +72,9 @@ class CourseController extends Controller
 
         #dd($registrados);
         return view('course.dashboard', compact('report','report_group','report_type','report_group_all'));
-    }    
+    } 
+    
+ 
 
     public function surveyMqi(Request $request)
     {
