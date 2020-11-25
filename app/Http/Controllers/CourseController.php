@@ -67,9 +67,6 @@ class CourseController extends Controller
         $certificates=round($report_all->avg('certificate'));
         $countries=round($report_all->avg('country'));
         $report_group_all = array($registered, $registered_in_date,$participants,$certificates,$countries);
-
-
-
         #dd($registrados);
         return view('course.dashboard', compact('report','report_group','report_type','report_group_all'));
     } 
@@ -217,13 +214,18 @@ class CourseController extends Controller
 
             $answers = DB::connection('pgsql')->select($sql); 
             $answers_collection=collect($answers);
-            $sample=$answers_collection->sum('total');          
+            if ($answers_collection->count()>0){
+                $sample=$answers_collection->sum('total');          
 
-            foreach ($answers_collection as $answer) {
-                array_push($answers_display_name_old,$answer->display_name);
-                array_push($answers_total_old,$answer->total);
-                array_push($answers_percentage_old,round(($answer->total/$sample)*100,2));
-            }        
+                foreach ($answers_collection as $answer) {
+                    array_push($answers_display_name_old,$answer->display_name);
+                    array_push($answers_total_old,$answer->total);
+                    array_push($answers_percentage_old,round(($answer->total/$sample)*100,2));
+                }
+            }else{
+                $old_data= 0;
+            }
+                    
 
         }else{
             $old_data= 0;
