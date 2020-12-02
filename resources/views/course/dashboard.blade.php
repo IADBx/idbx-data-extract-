@@ -10,13 +10,12 @@
             <h4 class="card-title ">{{$report->name}}</h4>
             <h4 class="card-title "> Inicio {{$report->start_date}}</h4>
             <input type="hidden" id="course_id" name="course_id" value='{{$report->course_id}}'>
-          </div>
+          </div> <!-- end card-header -->
           <div class="card-body"> 
-
-          </div>
-        </div>
+          </div> <!-- end card-body -->
+        </div> <!-- end card -->
       </div>
-    </div>
+    </div> <!-- end row -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -140,10 +139,13 @@
               </table>
 
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
+          </div><!--end card body -->
+        </div><!-- end card -->
+      </div> <!-- end row-md-12 -->
+    </div><!-- end row -->
+
+
+
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -151,9 +153,10 @@
             <h4 class="card-title ">Características de los registrados en el curso </h4>
           </div>
           <div class="card-body"> 
+
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>1.	Género con el cual los registrados se identifican</strong></h4>                
+                <h4><strong>1.  Género con el cual los registrados se identifican</strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 8</strong></h4>                
@@ -162,13 +165,16 @@
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_8"></div>              
             </div>
+
             <br><br>
+
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>2.	Origen étnico con el cual los registrados se identifican</strong></h4>                
+                <h4><strong>2.  Origen étnico con el cual los registrados se identifican</strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 9</strong></h4>                
@@ -177,12 +183,14 @@
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_9" ></div>              
-            </div>     
+            </div>    
+
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>3.	Nivel de educación de los registrados</strong></h4>                
+                <h4><strong>3.  Nivel de educación de los registrados</strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 10</strong></h4>                
@@ -191,12 +199,14 @@
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_10" ></div>              
             </div>   
+
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>4.	Rango de edad de los registrados</strong></h4>                
+                <h4><strong>4.  Rango de edad de los registrados</strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 7</strong></h4>                
@@ -205,12 +215,14 @@
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_7" ></div>              
             </div> 
+
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>5.	Sector o actividad a la que los participantes dedican más tiempo</strong></h4>                
+                <h4><strong>5.  Sector o actividad a la que los participantes dedican más tiempo</strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 11</strong></h4>                
@@ -219,128 +231,208 @@
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_11" ></div>              
             </div> 
 
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>6.	¿Tienes algún tipo de discapacidad visual, auditiva o motora que te limite aprovechar los contenidos del curso?
-</strong></h4>                
+                <h4><strong>
+                  6.  ¿Tienes algún tipo de discapacidad visual, auditiva o motora que te limite aprovechar los contenidos del curso?
+                </strong></h4>                
               </div>              
+
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta inicial, pregunta 14</strong></h4>                
               </div> 
+
               <div class="col-md-12">
                 <h4><strong>muestra: </strong></h4>                
               </div>                                          
             </div>
+
             <div class="row justify-content-md-center">              
                 <div id="question_14" ></div>              
             </div>                                                          
 
           </div>
         </div>
-      </div>
-    </div>
-
+      </div> <!-- end row md-12 -->
+    </div> <!--end row -->
     <div class="row">
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
             <h4 class="card-title ">Evaluación del curso y sus contenidos por parte de los participantes </h4>            
-          </div>
+          </div> <!-- end card header -->
           <div class="card-body"> 
             <div class="row">
-                <div class="col-md-12">
-                  <h4><strong>1.	Intención de los participantes al registrarse en el curso (%)</strong></h4>                
-                </div>              
-                <div class="col-md-12">
-                  <h4><strong>Fuente: Encuesta inicial, pregunta 1</strong></h4>                
-                </div> 
-                <div class="col-md-12">
-                  <h4><strong>muestra: </strong></h4>                
-                </div>                                          
+              <div class="col-md-12">
+                <h4><strong>1.  Intención de los participantes al registrarse en el curso (%)</strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 1</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>            
+            </div> <!-- end row -->
+            <div class="row justify-content-md-center">              
+              <div id="question_1"></div>              
+            </div> <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>2.  Ganancia de aprendizaje (conocimiento sobre los temas tratados en el curso antes y después del curso) </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 2</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>                                          
+            </div> <!-- end row -->
+            <div class="row justify-content-md-center">              
+              <div id="final_question_2" ></div>              
+            </div><!-- end row -->           
+            <div class="row">
+              <div class="col-md-12">
+                <p>•  La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de  puntos.</p>
+                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de  puntos.<p>
               </div>
-              <div class="row justify-content-md-center">              
-                  <div id="question_1" style="width:300x;height:400px;"></div>              
+            </div> <!-- end row -->
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los MOOC </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 1.1</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <h4><strong>2.	Ganancia de aprendizaje (conocimiento sobre los temas tratados en el curso antes y después del curso) </strong></h4>                
-                </div>              
-                <div class="col-md-12">
-                  <h4><strong>Fuente: Encuesta inicial, pregunta 2</strong></h4>                
-                </div> 
-                <div class="col-md-12">
-                  <h4><strong>muestra: </strong></h4>                
-                </div>                                          
-              </div>
-              <div class="row justify-content-md-center">              
-                  <div id="final_question_2" ></div>              
-              </div>           
-              <div class="row">
-                <div class="col-md-12">
-                    <p>•	La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de  puntos.</p>
-                    <p>•	La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de  puntos.<p>
-                </div>
-              </div>
+              <div class="col-md-12">
+                <p>Rating:</p>
+                <p>-  Entre 5 y 4,5 = Excelente.</p>
+                <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+              </div>                                                          
+            </div> <!-- end row -->              
+            <div class="row justify-content-md-center">              
+              <div id="final_question_1" ></div>              
+            </div>   
 
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>4a. Calidad de los contenidos del curso en general, comparado con el promedio general de los MOOC  </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>
+              <div class="col-md-12">
+                <p>Rating:</p>
+                <p>-  Entre 5 y 4,5 = Excelente.</p>
+                <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+              </div>                                                          
+            </div>              
+            <div class="row justify-content-md-center">              
+              <div id="final_question_3_a" ></div>              
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>4b. Calidad de los contenidos del curso , por tipo de contenido  </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>
+              <div class="col-md-12">
+                <p>Rating:</p>
+                <p>-  Entre 5 y 4,5 = Excelente.</p>
+                <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+              </div>                                                          
+            </div>              
+            <div class="row justify-content-md-center">              
+              <div id="final_question_3_b" ></div>              
+            </div> 
 
-              <div class="row">
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>5.  Calidad de los recursos de aprendizaje del curso (videos, lecturas, evaluaciones formativas y cuestionarios de evaluación calificados)  </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 4</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>
+              <div class="col-md-12">
+                <p>Rating:</p>
+                <p>-  Entre 5 y 4,5 = Excelente.</p>
+                <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+              </div>                                                          
+            </div>
+            <div class="row justify-content-md-center">              
+              <div id="final_question_4" ></div>              
+            </div>  
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>6.  Utilidad del curso en general  </strong></h4>                
+              </div>              
+              <div class="col-md-12">
+                <h4><strong>Fuente: Encuesta inicial, pregunta 5</strong></h4>                
+              </div> 
+              <div class="col-md-12">
+                <h4><strong>muestra: </strong></h4>                
+              </div>
+              <div class="col-md-12">
+                <p>Rating:</p>
+                <p>-  Entre 5 y 4,5 = Excelente.</p>
+                <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+              </div>                                                          
+            </div>                            
+            <div class="row justify-content-md-center">              
+              <div id="final_question_5" ></div>              
+            </div>  
+            <div class="row">
                 <div class="col-md-12">
-                  <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los MOOC </strong></h4>                
+                  <h4><strong>7.  Índice de calidad del MOOC (MQI)  </strong></h4>                
                 </div>              
-                <div class="col-md-12">
-                  <h4><strong>Fuente: Encuesta inicial, pregunta 1.1</strong></h4>                
-                </div> 
-                <div class="col-md-12">
-                  <h4><strong>muestra: </strong></h4>                
-                </div>
                 <div class="col-md-12">
                     <p>Rating:</p>
-                    <p>-	Entre 5 y 4,5 = Excelente.</p>
-                    <p>-	Entre 4,5 y 4,0 = Adecuado.</p>
-                    <p>-	Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
-                    <p>-	Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
-
-                </div>                                          
-              </div>
-
-
-              <div class="row">
-                <div class="col-md-12">
-                  <h4><strong>7.	Índice de calidad del MOOC (MQI)  </strong></h4>                
-                </div>              
-                <div class="col-md-12">
-                  <h4><strong>Fuente: Encuesta inicial, pregunta 1.1</strong></h4>                
-                </div> 
-                <div class="col-md-12">
-                  <h4><strong>muestra: </strong></h4>                
-                </div>
-                <div class="col-md-12">
-                    <p>Rating:</p>
-                    <p>-	Entre 5 y 4,5 = Excelente.</p>
-                    <p>-	Entre 4,5 y 4,0 = Adecuado.</p>
-                    <p>-	Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
-                    <p>-	Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
+                    <p>-  Entre 5 y 4,5 = Excelente.</p>
+                    <p>-  Entre 4,5 y 4,0 = Adecuado.</p>
+                    <p>-  Entre 4,0 y 3,0 = Deficiente. Revisar curso y tomar medidas.</p>
+                    <p>-  Entre 3,0 y 0 = Muy deficiente. Revisar el curso con urgencia y tomar medidas.</p>
 
                 </div>                                          
               </div>
               <div class="row justify-content-md-center">              
-                  <div id="satisfaction_mqi" style="width:400x;height:400px;"></div>              
-              </div>  
-             
-              
+                  <div id="satisfaction_mqi" ></div>              
+              </div>                                              
 
-          </div>
-        </div>
-      </div>
-    </div>
 
-    
-  </div>
-</div>
+          </div> <!--end card body -->
+          
+        </div> <!-- end card -->
+      </div> <!-- end row md-12 -->
+    </div> <!-- end row -->
+  </div> <!-- end container-fluid -->
+</div> <!-- end content -->
 @endsection
 
 @push('js')
@@ -390,6 +482,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -431,6 +526,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -475,6 +573,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -516,6 +617,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
               };
 
 
@@ -558,6 +662,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -599,6 +706,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -720,6 +830,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -761,6 +874,9 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                xaxis: {
+                  automargin: true
+                  }
                 };
 
 
@@ -860,9 +976,19 @@
                 type: 'bar',
                 y: data_question['percentage'],
                 x: data_question['display_name'],
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage'],
               }];
+              var layout = {              
+                width: 900,
+                height: 600,
+                xaxis: {
+                  automargin: true
+                  }              
+              };
 
-          Plotly.newPlot('question_1', data);
+          Plotly.newPlot('question_1', data,layout);
 
 
 
@@ -904,6 +1030,174 @@
 
       $.ajax({
            type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:1},
+           success:function(data_question){               
+              var data = [{
+                type: 'bar',
+                x: data_question['display_name'], 
+                y: data_question['average_question'],                                              
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+                width: 0.2,                                
+              }];
+
+              var layout = {
+                margin: {
+                  l: 20,
+                  r: 20,
+                  b: 200,
+                  t: 20,
+                  pad: 5
+                },                
+                autosize:false,
+                width: 900,
+                height: 500              
+                };              
+              Plotly.newPlot('final_question_1', data , layout);
+           }
+      });
+
+
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.individual') }}",
+           data:{course_id:course_id,question:3},
+           success:function(data_question){  
+             console.log(data_question)                          
+              var data = [{
+                type: 'bar',
+                y: data_question['average_survey'],
+                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_survey'],
+                width: 0.20,
+              }];
+              var layout = {
+                width: 900,
+                height: 400,
+                xaxis: {
+                  automargin: true
+                  }              
+                };              
+
+          Plotly.newPlot('final_question_3_a', data, layout);
+
+
+
+           }
+      });
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:3},
+           success:function(data_question){  
+             console.log(data_question)                          
+              var data = [{
+                type: 'bar',
+                x: data_question['display_name'], 
+                y: data_question['average_question'],                                              
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+                width:0.7,                                
+              }];
+
+              var layout = {
+                margin: {
+                  l: 20,
+                  r: 100,
+                  b: 220,
+                  t: 20,
+                  pad: 5
+                }, 
+                width: 900,
+                height: 600,
+                xaxis: {
+                  automargin: true
+                  }              
+                };              
+
+          Plotly.newPlot('final_question_3_b', data ,layout);
+
+           }
+      });
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:4},
+           success:function(data_question){  
+             console.log(data_question)                          
+              var data = [{
+                type: 'bar',
+                x: data_question['display_name'], 
+                y: data_question['average_question'],                                              
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],                                
+              }];
+
+              var layout = {
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                }, 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };              
+
+          Plotly.newPlot('final_question_4', data ,layout);
+
+           }
+      });
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:5},
+           success:function(data_question){  
+             console.log(data_question)                          
+              var data = [{
+                type: 'bar',
+                x: data_question['display_name'], 
+                y: data_question['average_question'],                                              
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],  
+                width: 0.5,                              
+              }];
+
+              var layout = {
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };              
+
+          Plotly.newPlot('final_question_5', data ,layout);
+
+           }
+      });
+      $.ajax({
+           type:'GET',
            url:"{{ route('survey.mqi') }}",
            data:{course_id:course_id},
            success:function(data_question){  
@@ -912,9 +1206,20 @@
                 type: 'bar',
                 y: data_question['mqi'],
                 x: ['MQI del MOOC'],
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['mqi'],
+                width:0.2,
               }];
+              var layout = {
+                width: 900,
+                height: 400,
+                xaxis: {
+                  automargin: true
+                  }              
+                };              
 
-          Plotly.newPlot('satisfaction_mqi', data);
+          Plotly.newPlot('satisfaction_mqi', data, layout);
 
 
 

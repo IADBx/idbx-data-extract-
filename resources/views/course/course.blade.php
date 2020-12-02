@@ -78,6 +78,8 @@
                                                             <thead class=" text-primary">
                                                                 <tr>
                                                                     <th class="text-center">Answer</th>
+                                                                    <th class="text-center">QUESTION MATCH</th>
+                                                                    <th class="text-center">ID MATCH</th>
                                                                     <th>quantity</th>
                                                                     <th>%</th>
                                                                 </tr>
@@ -90,6 +92,8 @@
                                                                 @endphp
                                                                 <tr>
                                                                   <td>{{$student->answer->display_name}}</td>
+                                                                  <td>{{$student->answer->question_parent}}</td>
+                                                                  <td>{{$student->answer->answer_id}}</td>
                                                                   <td>{{$student->total}}</td>
                                                                   <td>{{$student->percentage}}%</td>
                                                                 </tr>

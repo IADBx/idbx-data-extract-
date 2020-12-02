@@ -75,11 +75,38 @@ class CourseController extends Controller
 
     public function surveyMqi(Request $request)
     {
+        /*
         $report=Report::where('course_id','=',$request->get('course_id'))->firstOrFail(); 
         $mqi_data=[];
         array_push($mqi_data,$report->mqi);
+        */
+        $sql="select * from control_panel_course_report_mqi where  course_id='".$request->get('course_id')."'";
+        $course = DB::connection('pgsql')->select($sql);
+        $course_collection=collect($course);
+        $mqi_course=$course_collection->first()->mqi;
+        $mqi_data=[];
+        array_push($mqi_data,round($mqi_course,2));
 
         return response()->json(['mqi'=>$mqi_data]);
+
+    }
+
+    public function surveySatisfactionIndividual(Request $request)
+    {
+        /*
+        $report=Report::where('course_id','=',$request->get('course_id'))->firstOrFail(); 
+        $mqi_data=[];
+        array_push($mqi_data,$report->mqi);
+        */
+        $sql="select * from control_panel_course_report_satisfaction where  course_id='".$request->get('course_id')."' and question_parent='".$request->get('question')."'";
+        $course = DB::connection('pgsql')->select($sql);
+        $course_collection=collect($course);
+        $average_course=$course_collection->first()->average_total;
+
+        $average_data=[];
+        array_push($average_data,round($average_course,2));
+
+        return response()->json(['average_survey'=>$average_data]);
 
     }
 
@@ -292,6 +319,7 @@ class CourseController extends Controller
 
     public function surveySatisfaction(Request $request)
     {
+        /*
         $sql= "select d.*,q.display_name from control_panel_course_report_satisfaction d
         INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.question_id)
         inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
@@ -300,6 +328,14 @@ class CourseController extends Controller
         INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
         where ch.course_id='".$request->get('course_id')."' and q.question_parent='".$request->get('question')."' and v.poll='3'
          order by q.display_name desc";            
+         */
+        $request->get('question'); 
+        $sql ="select * from control_panel_course_report_satisfaction as d
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where d.course_id='".$request->get('course_id')."'
+        and d.question_parent='".$request->get('question')."'
+        and tq.poll='3'
+        order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
         $answers_display_name=[];
@@ -308,8 +344,8 @@ class CourseController extends Controller
         $answers_average_question=[];        
 
         foreach ($answers_collection as $answer) {
-            array_push($answers_display_name,$answer->display_name);
-            array_push($answers_average_question,$answer->average_question);
+            array_push($answers_display_name,$answer->display_name_es);
+            array_push($answers_average_question,round($answer->average_question,2));
             $total_sample=$answer->total_sample;
         }
         
