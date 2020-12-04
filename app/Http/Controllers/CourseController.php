@@ -102,11 +102,12 @@ class CourseController extends Controller
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $average_course=$course_collection->first()->average_total;
+        $total_sample=$course_collection->first()->total_sample;
 
         $average_data=[];
         array_push($average_data,round($average_course,2));
 
-        return response()->json(['average_survey'=>$average_data]);
+        return response()->json(['sample_survey'=>$total_sample,'average_survey'=>$average_data]);
 
     }
 
@@ -147,8 +148,9 @@ class CourseController extends Controller
             foreach ($answers_collection as $answer) {
                 array_push($answers_display_name,$answer->display_name);
                 array_push($answers_total,$answer->total);
-                array_push($answers_percentage,round($answer->percentage,2));
+                array_push($answers_percentage,round($answer->percentage,2));                
             }
+            $sample_survey=$sample;
 
         } else{
             $sql ="select ta.display_name_es,d.total,d.percentage from control_panel_course_answers_students_old d
@@ -172,6 +174,7 @@ class CourseController extends Controller
                 array_push($answers_total,$answer->total);
                 array_push($answers_percentage,round($answer->percentage,2));
             }
+            $sample_survey=$sample;
 
         }  
 
@@ -185,20 +188,6 @@ class CourseController extends Controller
 
         if($answers_collection->count()>0){
             $old_data= 1;
-            /*
-            $sql ="select sum(d.total) as total,ta.display_name_es as display_name from control_panel_course_answers_students_old d
-            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
-            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
-            INNER JOIN metadata_courses c on(d.course_id=c.id)
-            where d.poll=1
-            and c.\"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
-            where studio_id_1='".$request->get('course_id')."')
-            and c.start_date < (select start_date from metadata_courses 
-            where studio_id_1='".$request->get('course_id')."')
-            and tq.question_id='".$request->get('question')."'
-            GROUP BY ta.id,ta.display_name_es
-            ORDER BY ta.id asc";    
-            */
             $sql="Select display_name,sum(total) as total
             from
             ((select sum(d.total) as total,ta.display_name_es as display_name 
@@ -313,7 +302,7 @@ class CourseController extends Controller
         } 
 
         
-        return response()->json(['display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data]);
+        return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data]);
         
     }
 
@@ -347,10 +336,9 @@ class CourseController extends Controller
             array_push($answers_display_name,$answer->display_name_es);
             array_push($answers_average_question,round($answer->average_question,2));
             $total_sample=$answer->total_sample;
-        }
-        
-        
-        return response()->json(['display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample]);
+        }                
+        $sample_survey=$total_sample;
+        return response()->json(['sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample]);
         
     }
     

@@ -162,7 +162,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 8</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_8"> </span> </strong>estudiantes</h4>                
               </div>                                          
             </div>
 
@@ -180,7 +180,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 9</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_9"> </span> </strong>estudiantes</h4>                 
               </div>                                          
             </div>
 
@@ -196,7 +196,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 10</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_10"> </span> </strong>estudiantes</h4>                   
               </div>                                          
             </div>
 
@@ -212,7 +212,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 7</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_7"> </span> </strong>estudiantes</h4>                   
               </div>                                          
             </div>
 
@@ -228,7 +228,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 11</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_11"> </span> </strong>estudiantes</h4>                   
               </div>                                          
             </div>
 
@@ -248,7 +248,7 @@
               </div> 
 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_14"> </span> </strong>estudiantes</h4>                   
               </div>                                          
             </div>
 
@@ -275,7 +275,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 1</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_question_1"> </span> </strong>estudiantes</h4>                   
               </div>            
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -289,7 +289,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 2</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_2"> </span> </strong>estudiantes</h4>                
               </div>                                          
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -309,7 +309,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 1.1</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_1"> </span> </strong>estudiantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -331,7 +331,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_3_a"> </span> </strong>estudiantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -352,7 +352,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_3_b"> </span> </strong>estudiantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -374,7 +374,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 4</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_4"> </span> </strong>estudiantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -395,7 +395,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 5</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4><strong>muestra: </strong></h4>                
+                <h4>muestra:<strong><span id="sample_final_question_5"> </span> </strong>estudiantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -453,8 +453,8 @@
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:8},
-           success:function(data_question){  
-             
+           success:function(data_question){                
+              $("#sample_question_8").html(data_question['sample_survey']);
               if(data_question['old_data']==0){
                 var trace1 = {
                 x: data_question['display_name'],
@@ -545,7 +545,7 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:9},
            success:function(data_question){  
-             
+                $("#sample_question_9").html(data_question['sample_survey']);
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -634,7 +634,7 @@
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:10},
            success:function(data_question){  
-            
+                $("#sample_question_10").html(data_question['sample_survey']);
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -721,7 +721,8 @@
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:7},
-           success:function(data_question){              
+           success:function(data_question){ 
+                $("#sample_question_7").html(data_question['sample_survey']);             
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -801,8 +802,9 @@
       $.ajax({
            type:'GET',
            url:"{{ route('survey.initial') }}",
-           data:{course_id:course_id,question:11},
-           success:function(data_question){               
+           data:{course_id:course_id,question:11},           
+           success:function(data_question){       
+                $("#sample_question_11").html(data_question['sample_survey']);        
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -889,7 +891,8 @@
            type:'GET',
            url:"{{ route('survey.initial') }}",
            data:{course_id:course_id,question:14},
-           success:function(data_question){               
+           success:function(data_question){        
+                $("#sample_question_14").html(data_question['sample_survey']);       
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
@@ -969,8 +972,9 @@
       $.ajax({
            type:'GET',
            url:"{{ route('survey.initial') }}",
-           data:{course_id:course_id,question:1},
+           data:{course_id:course_id,question:1},           
            success:function(data_question){  
+             $("#sample_question_1").html(data_question['sample_survey']);
              console.log(data_question)                          
               var data = [{
                 type: 'bar',
@@ -1000,7 +1004,7 @@
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:2},
            success:function(data_question){  
-             console.log(data_question)                          
+              $("#sample_final_question_2").html(data_question['sample_survey']);                         
               var data = [{
                 type: 'bar',
                 x: data_question['average_question'],
@@ -1032,7 +1036,8 @@
            type:'GET',
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:1},
-           success:function(data_question){               
+           success:function(data_question){
+              $("#sample_final_question_1").html(data_question['sample_survey']);                
               var data = [{
                 type: 'bar',
                 x: data_question['display_name'], 
@@ -1066,7 +1071,7 @@
            url:"{{ route('survey.individual') }}",
            data:{course_id:course_id,question:3},
            success:function(data_question){  
-             console.log(data_question)                          
+              $("#sample_final_question_3_a").html(data_question['sample_survey']);                          
               var data = [{
                 type: 'bar',
                 y: data_question['average_survey'],
@@ -1096,7 +1101,7 @@
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:3},
            success:function(data_question){  
-             console.log(data_question)                          
+              $("#sample_final_question_3_b").html(data_question['sample_survey']);                          
               var data = [{
                 type: 'bar',
                 x: data_question['display_name'], 
@@ -1132,7 +1137,7 @@
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:4},
            success:function(data_question){  
-             console.log(data_question)                          
+              $("#sample_final_question_4").html(data_question['sample_survey']);                          
               var data = [{
                 type: 'bar',
                 x: data_question['display_name'], 
@@ -1166,7 +1171,7 @@
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:5},
            success:function(data_question){  
-             console.log(data_question)                          
+              $("#sample_final_question_5").html(data_question['sample_survey']);                          
               var data = [{
                 type: 'bar',
                 x: data_question['display_name'], 
