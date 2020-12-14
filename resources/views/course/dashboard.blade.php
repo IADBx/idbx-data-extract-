@@ -297,10 +297,13 @@
             </div><!-- end row -->           
             <div class="row">
               <div class="col-md-12">
-                <p>•  La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de  puntos.</p>
-                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de  puntos.<p>
+                <p>•  La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de <strong><span id='ganancia_individual'></span></strong>  puntos.</p>
+                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de <strong><span id='ganancia_historico'></span>  puntos.<p>
               </div>
             </div> <!-- end row -->
+            <div class="row justify-content-md-center">              
+              <div id="final_question_ganancia" ></div>              
+            </div>
             <div class="row">
               <div class="col-md-12">
                 <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los MOOC </strong></h4>                
@@ -1022,6 +1025,10 @@
                 height: 400,
                 yaxis: {
                   automargin: true
+                  },
+                xaxis: {
+                  automargin: false,
+                  range: [0, 10]
                   }              
                 };              
 
@@ -1029,6 +1036,118 @@
 
 
 
+           }
+      });
+      
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.individual_ganancia') }}",
+           data:{course_id:course_id,question:'2,1'},
+           success:function(data_question){             
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: ['Ganancia de aprendizaje'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: ['Ganancia de aprendizaje'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 700,
+                height: 600,
+                xaxis: {
+                  automargin: false
+                  },
+                  yaxis: {
+                  range: [0,10],
+                  automargin: false
+
+                },               
+                };
+
+
+               Plotly.newPlot('final_question_ganancia', data,layout);
+              } else{
+                var trace1 = {
+                x: ['Ganancia de aprendizaje'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: ['Ganancia de aprendizaje'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: ['Ganancia de aprendizaje'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 700,
+                height: 600,
+                xaxis: {
+                  automargin: false
+                  },
+                yaxis: {
+                  range: [0,10],
+                  automargin: false
+
+                },             
+                };
+
+
+               Plotly.newPlot('final_question_ganancia', data,layout);
+              }
            }
       });
 
@@ -1074,6 +1193,10 @@
                 height: 800,
                 xaxis: {
                   automargin: false
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0, 5]
                   }              
                 };
 
@@ -1125,7 +1248,11 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }               
                 };
 
 
@@ -1179,7 +1306,12 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  range: [0,5],
+                  automargin: false
+
+                },               
                 };
 
 
@@ -1230,7 +1362,12 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  range: [0,5],
+                  automargin: false
+
+                },              
                 };
 
 
@@ -1285,7 +1422,11 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }            
                 };
 
 
@@ -1336,7 +1477,11 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }            
                 };
 
 
@@ -1389,7 +1534,11 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }             
                 };
 
 
@@ -1440,6 +1589,10 @@
                 height: 800,
                 xaxis: {
                   automargin: false
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
                   }              
                 };
 
@@ -1493,7 +1646,11 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  }              
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }             
                 };
 
 
@@ -1544,6 +1701,10 @@
                 height: 800,
                 xaxis: {
                   automargin: false
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
                   }              
                 };
 
@@ -1589,6 +1750,10 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }
                 };
 
 
@@ -1630,6 +1795,10 @@
                 barmode: 'group',
                 width: 900,
                 height: 600,
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }
                 };
 
 
