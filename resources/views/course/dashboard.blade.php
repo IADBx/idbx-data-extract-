@@ -732,7 +732,7 @@
                   hoverinfo: 'none',
                   textposition: 'auto',
                   text: data_question['percentage'],
-                };
+                  };
 
                 var trace2 = {
                   x: data_question['display_name_historical'],
@@ -742,7 +742,7 @@
                   hoverinfo: 'none',
                   textposition: 'auto',
                   text: data_question['percentage_historical'],
-                };
+                  };
 
               var data = [trace1, trace2];
 
@@ -1034,155 +1034,35 @@
 
       $.ajax({
            type:'GET',
-           url:"{{ route('survey.satisfaction') }}",
-           data:{course_id:course_id,question:1},
-           success:function(data_question){
-              $("#sample_final_question_1").html(data_question['sample_survey']);                
-              var data = [{
-                type: 'bar',
-                x: data_question['display_name'], 
-                y: data_question['average_question'],                                              
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['average_question'],
-                width: 0.2,                                
-              }];
+           url:"{{ route('survey.individual_promedio') }}",
+           data:{course_id:course_id,question:'1,1'},
+           success:function(data_question){        
+                $("#sample_final_question_1").html(data_question['sample_survey']);       
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
 
               var layout = {
-                margin: {
-                  l: 20,
-                  r: 20,
-                  b: 200,
-                  t: 20,
-                  pad: 5
-                },                
-                autosize:false,
-                width: 900,
-                height: 500              
-                };              
-              Plotly.newPlot('final_question_1', data , layout);
-           }
-      });
-
-
-
-      $.ajax({
-           type:'GET',
-           url:"{{ route('survey.individual') }}",
-           data:{course_id:course_id,question:3},
-           success:function(data_question){  
-              $("#sample_final_question_3_a").html(data_question['sample_survey']);                          
-              var data = [{
-                type: 'bar',
-                y: data_question['average_survey'],
-                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['average_survey'],
-                width: 0.20,
-              }];
-              var layout = {
-                width: 900,
-                height: 400,
-                xaxis: {
-                  automargin: true
-                  }              
-                };              
-
-          Plotly.newPlot('final_question_3_a', data, layout);
-
-
-
-           }
-      });
-
-      $.ajax({
-           type:'GET',
-           url:"{{ route('survey.satisfaction') }}",
-           data:{course_id:course_id,question:3},
-           success:function(data_question){  
-              $("#sample_final_question_3_b").html(data_question['sample_survey']);                          
-              var data = [{
-                type: 'bar',
-                x: data_question['display_name'], 
-                y: data_question['average_question'],                                              
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['average_question'],
-                width:0.7,                                
-              }];
-
-              var layout = {
-                margin: {
-                  l: 20,
-                  r: 100,
-                  b: 220,
-                  t: 20,
-                  pad: 5
-                }, 
-                width: 900,
-                height: 600,
-                xaxis: {
-                  automargin: true
-                  }              
-                };              
-
-          Plotly.newPlot('final_question_3_b', data ,layout);
-
-           }
-      });
-
-      $.ajax({
-           type:'GET',
-           url:"{{ route('survey.satisfaction') }}",
-           data:{course_id:course_id,question:4},
-           success:function(data_question){  
-              $("#sample_final_question_4").html(data_question['sample_survey']);                          
-              var data = [{
-                type: 'bar',
-                x: data_question['display_name'], 
-                y: data_question['average_question'],                                              
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['average_question'],                                
-              }];
-
-              var layout = {
-                margin: {
-                  l: 40,
-                  r: 120,
-                  b: 260,
-                  t: 20,
-                  pad: 5
-                }, 
-                width: 900,
-                height: 800,
-                xaxis: {
-                  automargin: false
-                  }              
-                };              
-
-          Plotly.newPlot('final_question_4', data ,layout);
-
-           }
-      });
-      $.ajax({
-           type:'GET',
-           url:"{{ route('survey.satisfaction') }}",
-           data:{course_id:course_id,question:5},
-           success:function(data_question){  
-              $("#sample_final_question_5").html(data_question['sample_survey']);                          
-              var data = [{
-                type: 'bar',
-                x: data_question['display_name'], 
-                y: data_question['average_question'],                                              
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['average_question'],  
-                width: 0.5,                              
-              }];
-
-              var layout = {
+                barmode: 'group',
                 margin: {
                   l: 40,
                   r: 120,
@@ -1195,41 +1075,569 @@
                 xaxis: {
                   automargin: false
                   }              
-                };              
+                };
 
-          Plotly.newPlot('final_question_5', data ,layout);
 
+               Plotly.newPlot('final_question_1', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_1', data,layout);
+              }
            }
       });
+
+
+
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.individual') }}",
+           data:{course_id:course_id,question:'3,1'},
+           success:function(data_question){        
+                $("#sample_final_question_3_a").html(data_question['sample_survey']);       
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_3_a', data,layout);
+              } else{
+                var trace1 = {
+                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_3_a', data,layout);
+              }
+           }
+      });
+
+
+
+
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:3},
+           success:function(data_question){        
+                $("#sample_final_question_3_b").html(data_question['sample_survey']);       
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 1200,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_3_b', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 1200,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_3_b', data,layout);
+              }
+           }
+      });
+
+
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:4},
+           success:function(data_question){        
+                $("#sample_question_4").html(data_question['sample_survey']);       
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 1200,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_4', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 1200,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_4', data,layout);
+              }
+           }
+      });
+
+
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('survey.satisfaction') }}",
+           data:{course_id:course_id,question:5},
+           success:function(data_question){        
+                $("#sample_final_question_5").html(data_question['sample_survey']);       
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: data_question['display_name'],
+                  y: data_question['average_question'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question'],
+                };
+
+                var trace2 = {
+                  x: data_question['display_name_historical'],
+                  y: data_question['average_question_historical'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['average_question_historical'],
+                };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_5', data,layout);
+              } else{
+                var trace1 = {
+                x: data_question['display_name'],
+                y: data_question['average_question'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'],
+              };
+
+              var trace2 = {
+                x: data_question['display_name_old'],
+                y: data_question['average_question_old'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_old'],
+              };
+
+              var trace3 = {
+                x: data_question['display_name_historical'],
+                y: data_question['average_question_historical'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question_historical'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
+              var layout = {
+                barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }              
+                };
+
+
+               Plotly.newPlot('final_question_5', data,layout);
+              }
+           }
+      });
+
+
+
+
+
       $.ajax({
            type:'GET',
            url:"{{ route('survey.mqi') }}",
            data:{course_id:course_id},
-           success:function(data_question){  
-             console.log(data_question)                          
-              var data = [{
-                type: 'bar',
+           success:function(data_question){             
+                if(data_question['old_data']==0){
+                  var trace1 = {
+                  x: ['mqi'],
+                  y: data_question['mqi'],
+                  name: 'Edición:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['mqi'],
+                  };
+
+                var trace2 = {
+                  x: ['mqi'],
+                  y: data_question['mqi_old'],
+                  name: 'Historico MOOCs español',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['mqi_old'],
+                  };
+
+              var data = [trace1, trace2];
+
+              var layout = {
+                barmode: 'group',
+                width: 900,
+                height: 600,
+                };
+
+
+               Plotly.newPlot('satisfaction_mqi', data,layout);
+              } else{
+                var trace1 = {
+                x: ['mqi'],
                 y: data_question['mqi'],
-                x: ['MQI del MOOC'],
+                name: 'Edición:'+data_question['edition_course'] ,
+                type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['mqi'],
-                width:0.2,
-              }];
+              };
+
+              var trace2 = {
+                x: ['mqi'],
+                y: data_question['mqi_group'],
+                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['mqi_group'],
+              };
+
+              var trace3 = {
+                x: ['mqi'],
+                y: data_question['mqi_old'],
+                name: 'Historico MOOCs español',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['mqi_old'],
+              };
+
+              var data = [trace1, trace2, trace3];
+
               var layout = {
+                barmode: 'group',
                 width: 900,
-                height: 400,
-                xaxis: {
-                  automargin: true
-                  }              
-                };              
-
-          Plotly.newPlot('satisfaction_mqi', data, layout);
+                height: 600,
+                };
 
 
-
+               Plotly.newPlot('satisfaction_mqi', data,layout);
+              }
            }
       });
+
 
 
 

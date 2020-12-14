@@ -80,24 +80,67 @@ class CourseController extends Controller
         $mqi_data=[];
         array_push($mqi_data,$report->mqi);
         */
+               
+        $old_data= 0;
+        $mqi_data_group=[];
         $sql="select * from control_panel_course_report_mqi where  course_id='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $mqi_course=$course_collection->first()->mqi;
+        $edition_course=$course_collection->first()->edition;
         $mqi_data=[];
         array_push($mqi_data,round($mqi_course,2));
 
-        return response()->json(['mqi'=>$mqi_data]);
+        $sql="select * from metadata_courses
+        where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and start_date < (select start_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')";
+        $answers = DB::connection('pgsql')->select($sql); 
+        $answers_collection=collect($answers);
+        
+        if($answers_collection->count()>0){
+            $old_data= 1;
+            $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
+            INNER JOIN metadata_courses c on(m.id=c.id)
+            where
+            c.\"Course_Name_AllEditions\" = 
+            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."')
+             and c.start_date < 
+             (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))";
+            $course = DB::connection('pgsql')->select($sql);
+            $course_collection=collect($course);
+            $mqi_course=$course_collection->first()->average_group;
+            array_push($mqi_data_group,round($mqi_course,2));            
+        }
+
+        $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
+        INNER JOIN metadata_courses c on(m.id=c.id)
+        where
+        trim(c.language)=
+        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= 
+        (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=
+        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.studio_id_1 not in('".$request->get('course_id')."')";
+        $course = DB::connection('pgsql')->select($sql);
+        $course_collection=collect($course);
+        $mqi_course=$course_collection->first()->average_group;
+        $mqi_data_old=[];
+        array_push($mqi_data_old,round($mqi_course,2)); 
+
+
+
+
+        return response()->json(['mqi'=>$mqi_data,'mqi_group'=>$mqi_data_group,'mqi_old'=>$mqi_data_old,'old_data'=>$old_data,'edition_course'=>$edition_course]);
 
     }
 
     public function surveySatisfactionIndividual(Request $request)
     {
         /*
-        $report=Report::where('course_id','=',$request->get('course_id'))->firstOrFail(); 
-        $mqi_data=[];
-        array_push($mqi_data,$report->mqi);
-        */
         $sql="select * from control_panel_course_report_satisfaction where  course_id='".$request->get('course_id')."' and question_parent='".$request->get('question')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
@@ -108,6 +151,93 @@ class CourseController extends Controller
         array_push($average_data,round($average_course,2));
 
         return response()->json(['sample_survey'=>$total_sample,'average_survey'=>$average_data]);
+        */
+        $old_data= 0;
+        $mqi_data_group=[];
+        $request->get('question'); 
+        $sql ="select * from control_panel_course_report_satisfaction as d
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where d.course_id='".$request->get('course_id')."'
+        and d.question_id='".$request->get('question')."'
+        and tq.poll='3'
+        order by tq.display_name_es desc";
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $edition_course=$answers_collection->first()->edition;
+        $answers_display_name=[];
+        $answers_total=[];
+        $answers_percentage=[];
+        $answers_average_question=[];        
+
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name,$answer->display_name_es);
+            array_push($answers_average_question,round($answer->average_total,2));
+            $total_sample=$answer->total_sample;
+        }                
+        $sample_survey=$total_sample;
+
+        $sql="select * from metadata_courses
+        where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and start_date < (select start_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')";
+        $answers = DB::connection('pgsql')->select($sql); 
+        $answers_collection=collect($answers);
+        
+        if($answers_collection->count()>0){
+            $old_data= 1;
+            $sql="select tq.display_name_es, avg(CAST(d.average_total AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+            INNER JOIN metadata_courses c on(d.id=c.id)
+            INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+            where
+            c.\"Course_Name_AllEditions\" = 
+            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."')
+             and c.start_date < 
+             (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+            and d.question_id='".$request->get('question')."'
+            and tq.poll='3'
+            GROUP BY tq.question_id,tq.display_name_es
+            ORDER BY tq.question_id asc";
+            $answers = DB::connection('pgsql')->select($sql);
+            $answers_collection=collect($answers);  
+            $answers_display_name_old=[];
+            $answers_average_question_old=[];        
+    
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name_old,$answer->display_name_es);
+                array_push($answers_average_question_old,round($answer->average_group,2));
+            }   
+        }
+        $sql="select tq.display_name_es, avg(CAST(d.average_total AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+        INNER JOIN metadata_courses c on(d.id=c.id)
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where
+        trim(c.language)=
+        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= 
+        (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=
+        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.studio_id_1 not in('".$request->get('course_id')."')
+        and d.question_id in (
+        select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
+        )
+        and d.question_id='".$request->get('question')."'
+        and tq.poll='3'
+        GROUP BY tq.question_id,tq.display_name_es
+        ORDER BY tq.question_id asc";
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[];        
+
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name_historical,$answer->display_name_es);
+            array_push($answers_average_question_historical,round($answer->average_group,2));
+        }  
+
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
 
     }
 
@@ -308,16 +438,9 @@ class CourseController extends Controller
 
     public function surveySatisfaction(Request $request)
     {
-        /*
-        $sql= "select d.*,q.display_name from control_panel_course_report_satisfaction d
-        INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.question_id)
-        inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
-        INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
-        INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
-        INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
-        where ch.course_id='".$request->get('course_id')."' and q.question_parent='".$request->get('question')."' and v.poll='3'
-         order by q.display_name desc";            
-         */
+
+        $old_data= 0;
+        $mqi_data_group=[];
         $request->get('question'); 
         $sql ="select * from control_panel_course_report_satisfaction as d
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
@@ -327,6 +450,7 @@ class CourseController extends Controller
         order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
+        $edition_course=$answers_collection->first()->edition;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -338,7 +462,161 @@ class CourseController extends Controller
             $total_sample=$answer->total_sample;
         }                
         $sample_survey=$total_sample;
-        return response()->json(['sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample]);
+
+        $sql="select * from metadata_courses
+        where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and start_date < (select start_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')";
+        $answers = DB::connection('pgsql')->select($sql); 
+        $answers_collection=collect($answers);
+        
+        if($answers_collection->count()>0){
+            $old_data= 1;
+            $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+            INNER JOIN metadata_courses c on(d.id=c.id)
+            INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+            where
+            c.\"Course_Name_AllEditions\" = 
+            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."')
+             and c.start_date < 
+             (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+            and d.question_parent='".$request->get('question')."'
+            and tq.poll='3'
+            GROUP BY tq.question_id,tq.display_name_es
+            ORDER BY tq.question_id asc";
+            $answers = DB::connection('pgsql')->select($sql);
+            $answers_collection=collect($answers);  
+            $answers_display_name_old=[];
+            $answers_average_question_old=[];        
+    
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name_old,$answer->display_name_es);
+                array_push($answers_average_question_old,round($answer->average_group,2));
+            }   
+        }
+        $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+        INNER JOIN metadata_courses c on(d.id=c.id)
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where
+        trim(c.language)=
+        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= 
+        (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=
+        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.studio_id_1 not in('".$request->get('course_id')."')
+        and d.question_id in (
+        select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
+        )
+        and d.question_parent='".$request->get('question')."'
+        and tq.poll='3'
+        GROUP BY tq.question_id,tq.display_name_es
+        ORDER BY tq.question_id asc";
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[];        
+
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name_historical,$answer->display_name_es);
+            array_push($answers_average_question_historical,round($answer->average_group,2));
+        }  
+
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
+        
+    }
+
+    public function surveySatisfactionIndividualPromedio(Request $request)
+    {
+
+        $old_data= 0;
+        $mqi_data_group=[];
+        $request->get('question'); 
+        $sql ="select * from control_panel_course_report_satisfaction as d
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where d.course_id='".$request->get('course_id')."'
+        and d.question_id='".$request->get('question')."'
+        and tq.poll='3'
+        order by tq.display_name_es desc";
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $edition_course=$answers_collection->first()->edition;
+        $answers_display_name=[];
+        $answers_total=[];
+        $answers_percentage=[];
+        $answers_average_question=[];        
+
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name,$answer->display_name_es);
+            array_push($answers_average_question,round($answer->average_question,2));
+            $total_sample=$answer->total_sample;
+        }                
+        $sample_survey=$total_sample;
+
+        $sql="select * from metadata_courses
+        where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')
+        and start_date < (select start_date from metadata_courses 
+        where studio_id_1='".$request->get('course_id')."')";
+        $answers = DB::connection('pgsql')->select($sql); 
+        $answers_collection=collect($answers);
+        
+        if($answers_collection->count()>0){
+            $old_data= 1;
+            $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+            INNER JOIN metadata_courses c on(d.id=c.id)
+            INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+            where
+            c.\"Course_Name_AllEditions\" = 
+            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."')
+             and c.start_date < 
+             (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+            and d.question_id='".$request->get('question')."'
+            and tq.poll='3'
+            GROUP BY tq.question_id,tq.display_name_es
+            ORDER BY tq.question_id asc";
+            $answers = DB::connection('pgsql')->select($sql);
+            $answers_collection=collect($answers);  
+            $answers_display_name_old=[];
+            $answers_average_question_old=[];        
+    
+            foreach ($answers_collection as $answer) {
+                array_push($answers_display_name_old,$answer->display_name_es);
+                array_push($answers_average_question_old,round($answer->average_group,2));
+            }   
+        }
+        $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
+        INNER JOIN metadata_courses c on(d.id=c.id)
+        INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        where
+        trim(c.language)=
+        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.end_date <= 
+        (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+        and trim(c.type)=
+        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.studio_id_1 not in('".$request->get('course_id')."')
+        and d.question_id in (
+        select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
+        )
+        and d.question_id='".$request->get('question')."'
+        and tq.poll='3'
+        GROUP BY tq.question_id,tq.display_name_es
+        ORDER BY tq.question_id asc";
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[];        
+
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name_historical,$answer->display_name_es);
+            array_push($answers_average_question_historical,round($answer->average_group,2));
+        }  
+
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
         
     }
     

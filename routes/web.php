@@ -40,6 +40,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('survey_satisfaction', ['as' => 'survey.satisfaction', 'uses' => 'CourseController@surveySatisfaction']);
 	Route::get('survey_mqi', ['as' => 'survey.mqi', 'uses' => 'CourseController@surveyMqi']);
 	Route::get('survey_individual', ['as' => 'survey.individual', 'uses' => 'CourseController@surveySatisfactionIndividual']);
+	Route::get('survey_individual_promedio', ['as' => 'survey.individual_promedio', 'uses' => 'CourseController@surveySatisfactionIndividualPromedio']);
 
 
 	Route::get('table-list', function () {
