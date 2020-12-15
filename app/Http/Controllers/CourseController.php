@@ -145,6 +145,28 @@ class CourseController extends Controller
 
     }
 
+    public function courseCountry(Request $request)
+    {
+        $sql ="Select country,total FROM control_panel_course_report_general_country c
+        inner join metadata_courses m on(c.course_id=m.id)
+        where m.studio_id_1='".$request->get('course_id')."'
+        ORDER BY cast(total as INTEGER) DESC
+        LIMIT 10";
+        
+        $answers = DB::connection('pgsql')->select($sql);
+        $answers_collection=collect($answers);  
+        $answers_display_name=[];
+        $answers_average_question=[];
+        $answers_total=[]; 
+        foreach ($answers_collection as $answer) {
+            array_push($answers_display_name,$answer->country);
+            array_push($answers_average_question,$answer->total);
+        } 
+
+        return response()->json(['display_name'=>$answers_display_name,'average_question'=>$answers_average_question]);
+
+    }
+
     public function surveySatisfactionIndividual(Request $request)
     {
         /*

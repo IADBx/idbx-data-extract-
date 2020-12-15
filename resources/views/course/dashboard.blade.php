@@ -274,7 +274,27 @@
 
             <div class="row justify-content-md-center">              
                 <div id="question_14" ></div>              
-            </div>                                                          
+            </div>  
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>
+                  7. Los 10 países de Latinoamérica y el Caribe con mayor registro de usuarios 
+                </strong></h4>                
+              </div>              
+
+              <div class="col-md-12">
+                <h4><strong>Fuente: IDBx Dashboard</strong></h4>                
+              </div> 
+
+              <div class="col-md-12">
+                <h4>muestra:<strong>{{$report->registrado}} </strong>registros</h4>                   
+              </div>                                          
+            </div>
+            <div class="row justify-content-md-center">              
+                <div id="course_country" ></div>              
+            </div>
+                                                                    
 
           </div>
         </div>
@@ -1827,7 +1847,42 @@
            }
       });
 
+      $.ajax({
+           type:'GET',
+           url:"{{ route('course.countries') }}",
+           data:{course_id:course_id},
+           success:function(data_question){                        
+              var data = [{
+                type: 'bar',
+                x: data_question['average_question'],
+                y: data_question['display_name'],
+                orientation: 'h',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'], 
+                transforms: [{
+                  type: 'sort',
+                  target: 'y',
+                  order: 'descending'
+                }]               
+                
+              }];
 
+              var layout = {
+                width: 800,
+                height: 500,
+                yaxis: {
+                  automargin: true
+                  }
+                          
+                };              
+
+          Plotly.newPlot('course_country', data,layout);
+
+
+
+           }
+      });
 
 
   });  
