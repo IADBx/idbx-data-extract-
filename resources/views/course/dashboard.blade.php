@@ -58,7 +58,7 @@
                         <td>{{$report_type[0]}}</td>
                     </tr>
                     <tr>
-                      <td>Registrados a la fecha de cierre </td>
+                      <td>Registrados a la fecha de cierre <sup>2</sup></td>
                       <td>{{$report->in_date}}</td>
 
                       <?php if($report_group[0]>0){ ?>
@@ -72,7 +72,7 @@
                       <td>{{$report_type[1]}}</td>
                     </tr>
                     <tr>
-                      <td>Verificados a la fecha de cierre <sup>2</sup></td>
+                      <td>Verificados a la fecha de cierre </td>
                       <td>{{$report->verified}}</td>
 
                       <?php if($report_group[0]>0){ ?>
