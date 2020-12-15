@@ -182,6 +182,10 @@ class CourseController extends Controller
         return response()->json(['sample_survey'=>$total_sample,'average_survey'=>$average_data]);
         */
         $old_data= 0;
+        $answers_display_name_old=[];
+        $answers_average_question_old=[];
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[];
         $mqi_data_group=[];
         $request->get('question'); 
         $sql ="select * from control_panel_course_report_satisfaction as d
@@ -270,6 +274,10 @@ class CourseController extends Controller
     public function surveySatisfactionIndividualGanancia(Request $request)
     {
         $old_data= 0;
+        $answers_display_name_old=[];
+        $answers_average_question_old=[];
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[];
         $mqi_data_group=[];
         $request->get('question'); 
         $sql ="select * from control_panel_course_report_satisfaction as d
@@ -552,7 +560,11 @@ class CourseController extends Controller
 
     public function surveySatisfaction(Request $request)
     {
-
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[]; 
+        $answers_display_name_old=[];
+        $answers_average_question_old=[];
+        
         $old_data= 0;
         $mqi_data_group=[];
         $request->get('question'); 
@@ -646,6 +658,10 @@ class CourseController extends Controller
     {
 
         $old_data= 0;
+        $answers_display_name_old=[];
+        $answers_average_question_old=[];
+        $answers_display_name_historical=[];
+        $answers_average_question_historical=[]; 
         $mqi_data_group=[];
         $request->get('question'); 
         $sql ="select * from control_panel_course_report_satisfaction as d
