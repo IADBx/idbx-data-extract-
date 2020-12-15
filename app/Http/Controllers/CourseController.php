@@ -60,7 +60,7 @@ class CourseController extends Controller
         $registered_in_date=0;
         $participants=0;
         $certificates=0;              
-        $report_all = Report::where('group_name','=',$report->group_name)->where('end_date',"<=",$report->end_date)->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
         $participants=round($report_all->avg('participant'));
