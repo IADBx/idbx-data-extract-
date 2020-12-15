@@ -8,7 +8,8 @@
         <div class="card">
           <div class="card-header card-header-primary">
             <h4 class="card-title ">{{$report->name}}</h4>
-            <h4 class="card-title "> Inicio {{$report->start_date}}</h4>
+            <h4 class="card-title "> Fecha de inicio: {{$report->start_date}}</h4>
+            <h4 class="card-title "> Fecha de fin: {{$report->end_date}}</h4>
             <input type="hidden" id="course_id" name="course_id" value='{{$report->course_id}}'>
           </div> <!-- end card-header -->
           <div class="card-body"> 
@@ -33,9 +34,9 @@
                         <?php if($report_group[0]>0){?>
                           <th>Promedio ediciones anteriores</th>
                         <?php }?>
-
+                        
                         <?php if($report_group[0]>0){?>
-                          <th>Promedio todas las ediciones hasta la edición {{$report->edition}}</th>
+                          <!-- <th>Promedio todas las ediciones hasta la edición {{$report->edition}}</th> -->
                         <?php }?>                        
 
                         <th>Promedio histórico<br> MOOCs finalizados en español<br> del programa IDBx*</th>
@@ -51,13 +52,13 @@
                         <?php }?>
 
                         <?php if($report_group[0]>0){ ?>
-                          <td>{{$report_group_all[0]}}</td>                          
+                          <!-- <td>{{$report_group_all[0]}}</td>  -->                        
                         <?php }?>
 
                         <td>{{$report_type[0]}}</td>
                     </tr>
                     <tr>
-                      <td>Registrados a la fecha de cierre <sup>2</sup></td>
+                      <td>Registrados a la fecha de cierre </td>
                       <td>{{$report->in_date}}</td>
 
                       <?php if($report_group[0]>0){ ?>
@@ -65,10 +66,24 @@
                       <?php } ?>
 
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group_all[1]}}</td>                                              
+                        <!-- <td>{{$report_group_all[1]}}</td> -->                                             
                       <?php } ?>
 
                       <td>{{$report_type[1]}}</td>
+                    </tr>
+                    <tr>
+                      <td>Verificados a la fecha de cierre <sup>2</sup></td>
+                      <td>{{$report->verified}}</td>
+
+                      <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group[6]}}</td>                                              
+                      <?php } ?>
+
+                      <?php if($report_group[0]>0){ ?>
+                        <!-- <td>{{$report_group_all[1]}}</td> -->                                             
+                      <?php } ?>
+
+                      <td>{{$report_type[6]}}</td>
                     </tr>
                     <tr>
                       <td>Países representados   <sup>3</sup></td>
@@ -79,7 +94,7 @@
                       <?php }  ?>
 
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group_all[4]}}</td>                      
+                        <!-- <td>{{$report_group_all[4]}}</td>  -->                    
                       <?php }  ?>
 
                       <td>{{$report_type[4]}}</td>
@@ -91,37 +106,42 @@
                         <td>{{$report_group[2]}}<br>({{round(($report_group[2]/$report_group[0])*100,2)}}%)</td>
                       <?php }?>
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group_all[2]}}<br>({{round(($report_group_all[2]/$report_group_all[0])*100,2)}}%)</td>
+                        <!-- <td>{{$report_group_all[2]}}<br>({{round(($report_group_all[2]/$report_group_all[0])*100,2)}}%)</td> -->
                       <?php }?>                      
                       <td>{{$report_type[2]}}<br>({{round(($report_type[2]/$report_type[0])*100,2)}}%)</td>
                     </tr>
                     <tr>
                       <td>Participantes a la fecha de cierre <sup>5</sup> <br>(% de registrados al cierre)</td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
-                      <td></td>
+                      <td>{{$report->in_date_participant}}<br>({{round(($report->in_date_participant/$report->in_date)*100,2)}}%)</td>
+                      <?php if($report_group[0]>0){ ?>
+                        <td>{{$report_group[5]}}<br>({{round(($report_group[5]/$report_group[1])*100,2)}}%)</td>
+                      <?php }?>
+                      <!-- <td></td> -->
+                      <td>{{$report_type[5]}}<br>({{round(($report_type[5]/$report_type[1])*100,2)}}%)</td>
                     </tr>
                     <tr>
-                      <td>Certificados <sup>6</sup>  <br>(% de participantes al cierre)</td>
-                      <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->participant)*100,2)}}%)</td>
+                      <td>Certificados <sup>6</sup>  <br>(% de participantes al cierre)<br>(% de verificados)</td>
+                      <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->in_date_participant)*100,2)}}%)
+                          <br>({{round(($report->certificate/$report->verified)*100,2)}}%)</td>
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group[3]}}<br>({{round(($report_group[3]/$report_group[2])*100,2)}}%)</td>
+                        <td>{{$report_group[3]}}<br>({{round(($report_group[3]/$report_group[5])*100,2)}}%)
+                        <br>({{round(($report_group[3]/$report_group[6])*100,2)}}%)</td>
                         <?php }?>
 
                         <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group_all[3]}}<br>({{round(($report_group_all[3]/$report_group_all[2])*100,2)}}%)</td>
+                        <!-- <td>{{$report_group_all[3]}}<br>({{round(($report_group_all[3]/$report_group_all[2])*100,2)}}%)</td> -->
                         <?php }?>
 
 
-                      <td>{{$report_type[3]}}<br>({{round(($report_type[3]/$report_type[2])*100,2)}}%)</td>
+                      <td>{{$report_type[3]}}<br>({{round(($report_type[3]/$report_type[5])*100,2)}}%)
+                          <br>({{round(($report_type[3]/$report_type[6])*100,2)}}%)</td>
                     </tr>                                                                                
 
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="4"><strong>Nota: </strong><p>se hace el comparativo con los MOOC que ya están cerrados. Con fecha de corte {{$report->start_date}}. 
-                    <br>(*) Hasta {{$report->start_date}}</p></td>
+                    <td colspan="4"><strong>Nota: </strong><p>se hace el comparativo con los MOOC que ya están cerrados. Con fecha de corte {{$report->end_date}}. 
+                    <br>(*) Hasta {{$report->end_date}}</p></td>
                     </td>                    
                   </tr>
                   <tr>

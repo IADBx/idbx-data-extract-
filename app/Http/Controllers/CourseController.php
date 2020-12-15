@@ -40,21 +40,27 @@ class CourseController extends Controller
         $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
+        $participant_in_date=round($report_all->avg('in_date_participant'));
         $participants=round($report_all->avg('participant'));
+        $verified=round($report_all->avg('verified'));
         $certificates=round($report_all->avg('certificate'));
         $countries=round($report_all->avg('country'));
-        $report_group = array($registered, $registered_in_date,$participants,$certificates,$countries);
+        $report_group = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date,$verified);
         $registered=0;
         $registered_in_date=0;
+        $participant_in_date=0;
         $participants=0;
         $certificates=0;
+        $verified=0;
         $report_type = Report::where('type','=',$report->type)->where('language','=',$report->language)->where('end_date',"<=",$report->end_date)->get();
         $registered=round($report_type->avg('registrado'));
         $registered_in_date=round($report_type->avg('in_date'));
+        $participant_in_date=round($report_type->avg('in_date_participant'));
         $participants=round($report_type->avg('participant'));
+        $verified=round($report_type->avg('verified'));
         $certificates=round($report_type->avg('certificate')); 
         $countries=round($report_type->avg('country'));
-        $report_type = array($registered, $registered_in_date,$participants,$certificates,$countries); 
+        $report_type = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date,$verified); 
 
         $registered=0;
         $registered_in_date=0;
@@ -63,10 +69,11 @@ class CourseController extends Controller
         $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
+        $participant_in_date=round($report_all->avg('in_date_participant'));
         $participants=round($report_all->avg('participant'));
         $certificates=round($report_all->avg('certificate'));
         $countries=round($report_all->avg('country'));
-        $report_group_all = array($registered, $registered_in_date,$participants,$certificates,$countries);
+        $report_group_all = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date);
         #dd($registrados);
         return view('course.dashboard', compact('report','report_group','report_type','report_group_all'));
     } 
