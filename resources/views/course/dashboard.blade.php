@@ -633,10 +633,10 @@
 
               var layout = {
                 barmode: 'group',
-                width: 900,
+                width: 1000,
                 height: 800,
                 xaxis: {
-                  automargin: false
+                  automargin: true
                   }
                 };
 
@@ -677,10 +677,10 @@
 
               var layout = {
                 barmode: 'group',
-                width: 900,
+                width: 1000,
                 height: 800,
                 xaxis: {
-                  automargin: false
+                  automargin: true
                   }
               };
 
@@ -1072,7 +1072,6 @@
                 x: data_question['average_question'],
                 y: data_question['display_name'],
                 orientation: 'h',
-                marker:{color: ['#2ca02c', '#1f77b4']},
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['average_question'],                
