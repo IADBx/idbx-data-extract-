@@ -1887,6 +1887,9 @@
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['average_question'], 
+                textfont: {
+                  color: 'rgb(255, 255, 255)'
+                },
                 transforms: [{
                   type: 'sort',
                   target: 'y',
