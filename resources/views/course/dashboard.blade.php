@@ -182,7 +182,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 8</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_8"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_question_8"> </span> </strong>participantes</h4>                
               </div>                                          
             </div>
 
@@ -200,7 +200,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 9</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_9"> </span> </strong>estudiantes</h4>                 
+                <h4>muestra:<strong><span id="sample_question_9"> </span> </strong>participantes</h4>                 
               </div>                                          
             </div>
 
@@ -216,7 +216,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 10</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_10"> </span> </strong>estudiantes</h4>                   
+                <h4>muestra:<strong><span id="sample_question_10"> </span> </strong>participantes</h4>                   
               </div>                                          
             </div>
 
@@ -232,7 +232,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 7</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_7"> </span> </strong>estudiantes</h4>                   
+                <h4>muestra:<strong><span id="sample_question_7"> </span> </strong>participantes</h4>                   
               </div>                                          
             </div>
 
@@ -248,7 +248,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 11</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_11"> </span> </strong>estudiantes</h4>                   
+                <h4>muestra:<strong><span id="sample_question_11"> </span> </strong>participantes</h4>                   
               </div>                                          
             </div>
 
@@ -259,7 +259,7 @@
             <div class="row">
               <div class="col-md-12">
                 <h4><strong>
-                  6.  ¿Tienes algún tipo de discapacidad visual, auditiva o motora que te limite aprovechar los contenidos del curso?
+                  6.  Presencia de discapacidad visual, auditiva o motora que limite al participante a aprovechar los contenidos del curso 
                 </strong></h4>                
               </div>              
 
@@ -268,7 +268,7 @@
               </div> 
 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_14"> </span> </strong>estudiantes</h4>                   
+                <h4>muestra:<strong><span id="sample_question_14"> </span> </strong>participantes</h4>                   
               </div>                                          
             </div>
 
@@ -334,7 +334,7 @@
                 <h4><strong>Fuente: Encuesta inicial, pregunta 1</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_question_1"> </span> </strong>estudiantes</h4>                   
+                <h4>muestra:<strong><span id="sample_question_1"> </span> </strong>participantes</h4>                   
               </div>            
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -348,7 +348,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 2</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_2"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_2"> </span> </strong>participantes</h4>                
               </div>                                          
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -371,7 +371,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 1.1</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_1"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_1"> </span> </strong>participantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -393,7 +393,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_3_a"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_3_a"> </span> </strong>participantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -414,7 +414,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_3_b"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_3_b"> </span> </strong>participantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -436,7 +436,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 4</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_4"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_4"> </span> </strong>participantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -457,7 +457,7 @@
                 <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 5</strong></h4>                
               </div> 
               <div class="col-md-12">
-                <h4>muestra:<strong><span id="sample_final_question_5"> </span> </strong>estudiantes</h4>                
+                <h4>muestra:<strong><span id="sample_final_question_5"> </span> </strong>participantes</h4>                
               </div>
               <div class="col-md-12">
                 <p>Rating:</p>
@@ -634,9 +634,9 @@
               var layout = {
                 barmode: 'group',
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
+                  automargin: false
                   }
                 };
 
@@ -678,9 +678,9 @@
               var layout = {
                 barmode: 'group',
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
+                  automargin: false
                   }
               };
 
@@ -1784,7 +1784,7 @@
            success:function(data_question){             
                 if(data_question['old_data']==0){
                   var trace1 = {
-                  x: ['mqi'],
+                  x: ['MQI'],
                   y: data_question['mqi'],
                   name: 'Edición:'+data_question['edition_course'] ,
                   type: 'bar',
@@ -1794,7 +1794,7 @@
                   };
 
                 var trace2 = {
-                  x: ['mqi'],
+                  x: ['MQI'],
                   y: data_question['mqi_old'],
                   name: 'Historico MOOCs español',
                   type: 'bar',
@@ -1819,7 +1819,7 @@
                Plotly.newPlot('satisfaction_mqi', data,layout);
               } else{
                 var trace1 = {
-                x: ['mqi'],
+                x: ['MQI'],
                 y: data_question['mqi'],
                 name: 'Edición:'+data_question['edition_course'] ,
                 type: 'bar',
@@ -1829,7 +1829,7 @@
               };
 
               var trace2 = {
-                x: ['mqi'],
+                x: ['MQI'],
                 y: data_question['mqi_group'],
                 name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
                 type: 'bar',
@@ -1839,7 +1839,7 @@
               };
 
               var trace3 = {
-                x: ['mqi'],
+                x: ['MQI'],
                 y: data_question['mqi_old'],
                 name: 'Historico MOOCs español',
                 type: 'bar',
