@@ -357,7 +357,7 @@
             <div class="row">
               <div class="col-md-12">
                 <p>•  La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de <strong><span id='ganancia_individual'></span></strong>  puntos.</p>
-                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de <strong><span id='ganancia_historico'></span>  puntos.<p>
+                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de <strong><span id='ganancia_individual_historical'></span>  puntos.<p>
               </div>
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -1102,7 +1102,9 @@
            type:'GET',
            url:"{{ route('survey.individual_ganancia') }}",
            data:{course_id:course_id,question:'2,1'},
-           success:function(data_question){             
+           success:function(data_question){    
+                $("#ganancia_individual").html(data_question['total_gain']); 
+                $("#ganancia_individual_historical").html(data_question['total_gain_historical']);          
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: ['Ganancia de aprendizaje'],

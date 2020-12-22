@@ -313,11 +313,13 @@ class CourseController extends Controller
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
-        $answers_average_question=[];        
+        $answers_average_question=[];  
+        $total_gain=0;      
 
         foreach ($answers_collection as $answer) {
             array_push($answers_display_name,$answer->display_name_es);
             array_push($answers_average_question,round($answer->total_gain,2));
+            $total_gain=round($answer->total_gain,2);
             $total_sample=$answer->total_sample;
         }                
         $sample_survey=$total_sample;
@@ -374,14 +376,16 @@ class CourseController extends Controller
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
         $answers_display_name_historical=[];
-        $answers_average_question_historical=[];        
+        $answers_average_question_historical=[];  
+        $total_gain_historical=0;      
 
         foreach ($answers_collection as $answer) {
             array_push($answers_display_name_historical,$answer->display_name_es);
             array_push($answers_average_question_historical,round($answer->average_group,2));
+            $total_gain_historical=round($answer->average_group,2);
         }  
 
-        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
+        return response()->json(['total_gain'=>$total_gain,'total_gain_historical'=>$total_gain_historical,'display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
 
     }
 
