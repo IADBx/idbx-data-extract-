@@ -294,7 +294,26 @@
             <div class="row justify-content-md-center">              
                 <div id="course_country" ></div>              
             </div>
-                                                                    
+
+            <div class="row">
+              <div class="col-md-12">
+                <h4><strong>
+                  8.Primeros 10 países con mayor registro de usuarios como proporción en relación con la Población Económicamente Activa (PEA) por cada 100,000 habitantes 
+                </strong></h4>                
+              </div>              
+
+              <div class="col-md-12">
+                <h4><strong>Fuente: IDBx Dashboard</strong></h4>                
+              </div> 
+
+              <div class="col-md-12">
+                <h4>muestra:<strong>{{$report->registrado}} </strong>registros</h4>                   
+              </div>                                          
+            </div>
+            <div class="row justify-content-md-center">              
+                <div id="course_country_pea" ></div>              
+            </div>
+
 
           </div>
         </div>
@@ -326,7 +345,7 @@
                 <h4><strong>2.  Ganancia de aprendizaje (conocimiento sobre los temas tratados en el curso antes y después del curso) </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 2</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 2</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_2"> </span> </strong>estudiantes</h4>                
@@ -349,7 +368,7 @@
                 <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los MOOC </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 1.1</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 1.1</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_1"> </span> </strong>estudiantes</h4>                
@@ -371,7 +390,7 @@
                 <h4><strong>4a. Calidad de los contenidos del curso en general, comparado con el promedio general de los MOOC  </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_3_a"> </span> </strong>estudiantes</h4>                
@@ -392,7 +411,7 @@
                 <h4><strong>4b. Calidad de los contenidos del curso , por tipo de contenido  </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 3</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 3</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_3_b"> </span> </strong>estudiantes</h4>                
@@ -414,7 +433,7 @@
                 <h4><strong>5.  Calidad de los recursos de aprendizaje del curso (videos, lecturas, evaluaciones formativas y cuestionarios de evaluación calificados)  </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 4</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 4</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_4"> </span> </strong>estudiantes</h4>                
@@ -435,7 +454,7 @@
                 <h4><strong>6.  Utilidad del curso en general  </strong></h4>                
               </div>              
               <div class="col-md-12">
-                <h4><strong>Fuente: Encuesta inicial, pregunta 5</strong></h4>                
+                <h4><strong>Fuente: Encuesta final de satisfacción, Pregunta 5</strong></h4>                
               </div> 
               <div class="col-md-12">
                 <h4>muestra:<strong><span id="sample_final_question_5"> </span> </strong>estudiantes</h4>                
@@ -1878,6 +1897,43 @@
                 };              
 
           Plotly.newPlot('course_country', data,layout);
+
+
+
+           }
+      });
+
+      $.ajax({
+           type:'GET',
+           url:"{{ route('course.pea') }}",
+           data:{course_id:course_id},
+           success:function(data_question){                        
+              var data = [{
+                type: 'bar',
+                x: data_question['average_question'],
+                y: data_question['display_name'],
+                orientation: 'h',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['average_question'], 
+                transforms: [{
+                  type: 'sort',
+                  target: 'y',
+                  order: 'descending'
+                }]               
+                
+              }];
+
+              var layout = {
+                width: 800,
+                height: 500,
+                yaxis: {
+                  automargin: true
+                  }
+                          
+                };              
+
+          Plotly.newPlot('course_country_pea', data,layout);
 
 
 

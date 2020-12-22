@@ -43,6 +43,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::get('survey_individual_ganancia', ['as' => 'survey.individual_ganancia', 'uses' => 'CourseController@surveySatisfactionIndividualGanancia']);
 	Route::get('survey_individual_promedio', ['as' => 'survey.individual_promedio', 'uses' => 'CourseController@surveySatisfactionIndividualPromedio']);
 	Route::get('countries', ['as' => 'course.countries', 'uses' => 'CourseController@courseCountry']);
+	Route::get('countries_pea', ['as' => 'course.pea', 'uses' => 'CourseController@courseCountryPea']);
 
 	Route::get('table-list', function () {
 		return view('pages.table_list');
