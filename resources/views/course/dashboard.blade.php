@@ -451,8 +451,8 @@
             </div> 
             <div class="row">
               <div class="col-md-12">
-                <p>•  El promedio de la calidad de los recursos del curso de {{$report->name}} es de <strong><span id='calidad_individual'></span></strong> puntos de un máximo de 5.</p>
-                <p>•  El promedio histórico de la calidad de todos los recursos de todos los MOOC es de  <strong><span id='calidad_individual_historical'></span> puntos de un máximo de 5.<p>
+                <p>•  El promedio de la calidad de los recursos del curso de {{$report->name}} es de <strong><span id='calidad_individual'></span> puntos</strong> de un máximo de 5.</p>
+                <p>•  El promedio histórico de la calidad de todos los recursos de todos los MOOC es de  <strong><span id='calidad_individual_historical'></span> puntos </strong>de un máximo de 5.<p>
               </div>
             </div> <!-- end row -->
 
@@ -1924,6 +1924,9 @@
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['average_question'], 
+                textfont: {
+                  color: 'rgb(255, 255, 255)'
+                },
                 transforms: [{
                   type: 'sort',
                   target: 'y',
