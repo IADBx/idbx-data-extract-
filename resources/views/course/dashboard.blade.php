@@ -549,11 +549,22 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 1200,
                 height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }            
                 };
 
 
@@ -593,11 +604,22 @@
 
               var layout = {
                 barmode: 'group',
-                width: 900,
-                height: 600,
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 1200,
+                height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  },
+                yaxis: {
+                  automargin: false,
+                  range: [0,5]
+                  }            
                 };
 
 
