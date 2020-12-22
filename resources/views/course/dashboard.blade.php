@@ -556,7 +556,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -607,7 +607,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -661,7 +661,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -712,7 +712,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -764,7 +764,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -815,7 +815,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -866,7 +866,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -917,7 +917,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -968,7 +968,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -1019,7 +1019,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -1070,7 +1070,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -1121,7 +1121,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 900,
+                width: 1200,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -1150,7 +1150,7 @@
                 text: data_question['percentage'],
               }];
               var layout = {              
-                width: 900,
+                width: 1200,
                 height: 600,
                 xaxis: {
                   automargin: true
