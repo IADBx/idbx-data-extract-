@@ -615,11 +615,7 @@
                 height: 800,
                 xaxis: {
                   automargin: false
-                  },
-                yaxis: {
-                  automargin: false,
-                  range: [0,5]
-                  }            
+                  }           
                 };
 
 
