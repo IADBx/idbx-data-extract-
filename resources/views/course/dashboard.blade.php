@@ -556,15 +556,11 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 1200,
+                width: 900,
                 height: 800,
                 xaxis: {
                   automargin: false
-                  },
-                yaxis: {
-                  automargin: false,
-                  range: [0,5]
-                  }            
+                  }           
                 };
 
 
@@ -611,7 +607,7 @@
                   t: 20,
                   pad: 5
                 },                 
-                width: 1200,
+                width: 900,
                 height: 800,
                 xaxis: {
                   automargin: false
@@ -658,11 +654,18 @@
 
               var layout = {
                 barmode: 'group',
-                width: 1000,
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
                 height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  }           
                 };
 
 
@@ -702,12 +705,19 @@
 
               var layout = {
                 barmode: 'group',
-                width: 1000,
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
+                width: 900,
                 height: 800,
                 xaxis: {
-                  automargin: true
-                  }
-              };
+                  automargin: false
+                  }           
+                };
 
 
                Plotly.newPlot('question_9', data,layout);
@@ -747,11 +757,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  }           
                 };
 
 
@@ -791,11 +808,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  }           
                 };
 
 
@@ -835,8 +859,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }           
                 };
 
 
@@ -876,8 +910,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }           
                 };
 
 
@@ -917,11 +961,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  }           
                 };
 
 
@@ -961,11 +1012,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
                 xaxis: {
-                  automargin: true
-                  }
+                  automargin: false
+                  }           
                 };
 
 
@@ -1005,8 +1063,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }           
                 };
 
 
@@ -1046,8 +1114,18 @@
 
               var layout = {
                 barmode: 'group',
+                margin: {
+                  l: 40,
+                  r: 120,
+                  b: 260,
+                  t: 20,
+                  pad: 5
+                },                 
                 width: 900,
-                height: 600,
+                height: 800,
+                xaxis: {
+                  automargin: false
+                  }           
                 };
 
 
