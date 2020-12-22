@@ -448,7 +448,14 @@
             </div>
             <div class="row justify-content-md-center">              
               <div id="final_question_4" ></div>              
-            </div>  
+            </div> 
+            <div class="row">
+              <div class="col-md-12">
+                <p>•  El promedio de la calidad de los recursos del curso de {{$report->name}} es de <strong><span id='calidad_individual'></span></strong> puntos de un máximo de 5.</p>
+                <p>•  El promedio histórico de la calidad de todos los recursos de todos los MOOC es de  <strong><span id='calidad_individual_historical'></span> puntos de un máximo de 5.<p>
+              </div>
+            </div> <!-- end row -->
+
             <div class="row">
               <div class="col-md-12">
                 <h4><strong>6.  Utilidad del curso en general  </strong></h4>                
@@ -1557,7 +1564,7 @@
            url:"{{ route('survey.satisfaction') }}",
            data:{course_id:course_id,question:4},
            success:function(data_question){        
-                $("#sample_question_4").html(data_question['sample_survey']);       
+                $("#sample_final_question_4").html(data_question['sample_survey']);       
                 if(data_question['old_data']==0){
                   var trace1 = {
                   x: data_question['display_name'],
