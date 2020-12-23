@@ -124,8 +124,8 @@
                       <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->in_date_participant)*100,2)}}%)
                           <br>({{$report->verified == 0 ? 0 : round(($report->certificate/$report->verified)*100,2)}}%)</td>
                       <?php if($report_group[0]>0){ ?>
-                        <td>{{$report_group[3]}}<br>({{round(($report_group[3]/$report_group[5])*100,2)}}%)
-                        <br>({{round(($report_group[3]/$report_group[6])*100,2)}}%)</td>
+                        <td>{{$report_group[3]}}<br>({{report_group[5] == 0 ? 0 :round(($report_group[3]/$report_group[5])*100,2)}}%)
+                        <br>({{$report_group[6] == 0 ? 0 : round(($report_group[3]/$report_group[6])*100,2)}}%)</td>
                         <?php }?>
 
                         <?php if($report_group[0]>0){ ?>
