@@ -134,7 +134,7 @@
 
 
                       <td>{{$report_type[3]}}<br>({{round(($report_type[3]/$report_type[5])*100,2)}}%)
-                          <br>({{round(($report_type[3]/$report_type[6])*100,2)}}%)</td>
+                          <br>({{$report_type[6] == 0 ? 0 : round(($report_type[3]/$report_type[6])*100,2)}}%)</td>
                     </tr>                                                                                
 
                 </tbody>
