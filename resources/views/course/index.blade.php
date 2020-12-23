@@ -34,6 +34,9 @@
                     Id
                   </th>
                   <th>
+                    Course Id
+                  </th>
+                  <th>
                     Name
                   </th>
                   <th>
@@ -44,7 +47,10 @@
                   @foreach($data as $course)
                   <tr>
                       <td>{{$course->id}}</td>
+                      <td>{{$course->studio_id_1}}</td>
                       <td>{{$course->name}}</td>
+                      
+                      
                       <td>
                       
                         <a href="{{ route('courses.show',$course->studio_id_1) }}" class="btn btn-warning">Structure</a>
