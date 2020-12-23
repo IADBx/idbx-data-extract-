@@ -514,7 +514,7 @@ class CourseController extends Controller
                 foreach ($answers_collection as $answer) {
                     array_push($answers_display_name_old,$answer->display_name);
                     array_push($answers_total_old,$answer->total);
-                    if($answer->total/$sample>0){
+                    if($sample>0){
                         array_push($answers_percentage_old,round(($answer->total/$sample)*100,2));
                     }else{
                         array_push($answers_percentage_old,0);
