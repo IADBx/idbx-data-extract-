@@ -11,6 +11,35 @@
             <p class="card-category"> {{$data->id}}</p>
           </div>
           <div class="card-body">
+            <div class='row'>
+              @if ($survey_initial >0)
+              <div class="col-md-6">
+                <a href="{{ route('course.structure_survey',['id'=>$data->studio_id_1,'survey'=>1]) }}" class="btn btn-success">
+                    Encuesta inicial detectada
+                    </a>
+              </div>
+              @else
+              <div class="col-md-6">
+                <a href="#" class="btn btn-warning">
+                    No se ha detectatado la encuesta inicial 
+                    </a>
+              </div>
+              @endif
+              @if ($survey_final >0)
+              <div class="col-md-4">
+                <a href="{{ route('course.structure_survey',['id'=>$data->studio_id_1,'survey'=>3]) }}" class="btn btn-success">
+                    Encuesta de satisfacción final detectada
+                    </a>
+              </div>
+              @else
+              <div class="col-md-4">
+                <a href="#" class="btn btn-warning">
+                    No se ha detectatado la encuesta de satisfaccion final
+                    </a>
+              </div>
+              @endif
+
+            </div>
             <div id="accordion">
               <div class="card">
                   @foreach($data->chapters as $chapter)

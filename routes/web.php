@@ -34,6 +34,7 @@ Route::group(['middleware' => 'auth'], function () {
 	Route::apiResource('problems', 'ProblemController');
 
 	Route::get('course_dashboard/{id}', ['as' => 'course.dashboard', 'uses' => 'CourseController@dashboard']);
+	Route::get('course_survey/{id}/{survey}', ['as' => 'course.structure_survey', 'uses' => 'CourseController@structureSurvey']);
 	#Route::get('course_dashboard', ['as' => 'course.dashboard', 'uses' => 'CourseController@surveyInitialTest']);
 
 	Route::get('survey_initial', ['as' => 'survey.initial', 'uses' => 'CourseController@surveyInitial']);
