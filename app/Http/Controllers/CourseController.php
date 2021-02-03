@@ -894,8 +894,9 @@ class CourseController extends Controller
         order by CAST(tq.question_id AS INTEGER),CAST(ta.answer_id AS INTEGER) asc";
         $answers_template = collect(DB::connection('pgsql')->select($sql)); 
 
-        $sql="select an.display_name,an.answer_id,ta.id as id_template,an.question_parent from  control_panel_course_resource_answers an
+        $sql="select an.display_name,an.answer_id,ta.id as id_template,an.question_parent,tq.question_id from  control_panel_course_resource_answers an
         left JOIN control_panel_course_template_answer_survey ta on(ta.answer_id=an.answer_id)
+        left JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
         INNER JOIN control_panel_course_resources r on(r.module_id=an.resource_id)
         inner join control_panel_course_verticals v on(v.module_id=r.vertical_id)
         inner join control_panel_course_sequentials s on(s.module_id=v.sequential_id)

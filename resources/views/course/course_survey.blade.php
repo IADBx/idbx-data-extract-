@@ -87,12 +87,45 @@
                               </tr>
                               
                             @endif
+                          @endforeach
 
-                          
-
+                          @foreach($answers_edx as $answer_edx)
+                            @if($answer_edx->question_parent==$question_template->question_id)
+                              @if(empty($answer_edx->id_template))
+                              <tr>
+                                <td></td>
+                                <td style="color:orange">No se encontró en el template</td>
+                                <td style="color:orange">{{$answer_edx->display_name}}</td>
+                                <td><i class="material-icons" style="color:orange">dangerous</i></td>
+                              </tr>
+                              @endif
+                            @endif
                           @endforeach
                           
 
+                        @endforeach
+                        @foreach($questions_edx as $question_edx)
+                          @if(empty($question_edx->id_template))
+                            <tr>
+                              <td style="color:orange"> <strong>Pregunta</strong>                             
+                              </td>
+                              <td style="color:orange"><strong>No se ha encontrado en el template</strong></td>
+                              <td >
+                                <strong>{{$question_edx->display_name}}</strong>
+                              </td>
+                              <td><i class="material-icons" style="color:orange">dangerous</i></td>
+                            </tr>
+                            @foreach($answers_edx as $answer_edx)
+                              @if($question_edx->question_id==$answer_edx->question_parent)
+                                <tr>
+                                  <td></td>
+                                  <td style="color:orange"><strong>No se ha encontrado en el template</strong></td>
+                                  <td>{{$answer_edx->display_name}}</td>
+                                  <td><i class="material-icons" style="color:orange">dangerous</i></td>
+                                </tr>
+                              @endif
+                            @endforeach
+                          @endif
                         @endforeach
                     </tbody>
                   </table>
