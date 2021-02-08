@@ -870,6 +870,58 @@ class CourseController extends Controller
         //
     }
 
+    public function structureSurveyFinal($id,$survey)
+    {
+        $sql="select * from control_panel_course_template_question_survey tq
+        where tq.poll='".$survey."'
+        ORDER BY tq.question_id  asc";
+        $questions_template = collect(DB::connection('pgsql')->select($sql)); 
+        
+        $sql="select q.display_name,q.question_id,tq.id as id_template from  control_panel_course_resource_questions q
+        LEFT JOIN control_panel_course_template_question_survey tq on(tq.question_id=q.question_id and tq.poll='".$survey."')
+        INNER JOIN control_panel_course_resources r on(r.module_id=q.resource_id)
+        inner join control_panel_course_verticals v on(v.module_id=r.vertical_id)
+        inner join control_panel_course_sequentials s on(s.module_id=v.sequential_id)
+        inner join control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=ch.course_id)
+        where r.poll='".$survey."' 
+        and m.studio_id_1='".$id."'";
+        $questions_edx = collect(DB::connection('pgsql')->select($sql)); 
+
+
+        if($survey==1){
+            $sql="select tq.question_parent,tq.question_id,ta.display_name_es,ta.answer_id FROM control_panel_course_template_answer_survey ta 
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            where tq.poll='".$survey."'
+            order by CAST(tq.question_id AS INTEGER),CAST(ta.answer_id AS INTEGER) asc";
+
+        }
+        if($survey==3){
+            $sql="select tq.question_parent,tq.question_id,ta.display_name_es,ta.answer_id FROM control_panel_course_template_answer_survey ta 
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            where tq.poll='".$survey."'
+            order by CAST(ta.answer_id AS INTEGER) asc ,tq.question_id asc";
+
+        }
+        
+        $answers_template = collect(DB::connection('pgsql')->select($sql)); 
+
+        $sql="select an.display_name,an.answer_id,ta.id as id_template,an.question_parent,tq.question_id from  control_panel_course_resource_answers an
+        left JOIN control_panel_course_template_answer_survey ta on(ta.answer_id=an.answer_id)
+        left JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+        INNER JOIN control_panel_course_resources r on(r.module_id=an.resource_id)
+        inner join control_panel_course_verticals v on(v.module_id=r.vertical_id)
+        inner join control_panel_course_sequentials s on(s.module_id=v.sequential_id)
+        inner join control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=ch.course_id)
+        where r.poll='".$survey."'
+        and m.studio_id_1='".$id."'";
+        $answers_edx = collect(DB::connection('pgsql')->select($sql)); 
+
+        
+        return view('course.course_survey_final', compact('questions_template','questions_edx','answers_template','answers_edx'));
+    }
+
     public function structureSurvey($id,$survey)
     {
         $sql="select * from control_panel_course_template_question_survey tq
@@ -878,20 +930,32 @@ class CourseController extends Controller
         $questions_template = collect(DB::connection('pgsql')->select($sql)); 
         
         $sql="select q.display_name,q.question_id,tq.id as id_template from  control_panel_course_resource_questions q
-        LEFT JOIN control_panel_course_template_question_survey tq on(tq.question_id=q.question_id)
+        LEFT JOIN control_panel_course_template_question_survey tq on(tq.question_id=q.question_id and tq.poll='".$survey."')
         INNER JOIN control_panel_course_resources r on(r.module_id=q.resource_id)
         inner join control_panel_course_verticals v on(v.module_id=r.vertical_id)
         inner join control_panel_course_sequentials s on(s.module_id=v.sequential_id)
         inner join control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
         INNER JOIN metadata_courses m on(m.studio_id_1=ch.course_id)
-        where r.poll='".$survey."'
+        where r.poll='".$survey."' 
         and m.studio_id_1='".$id."'";
         $questions_edx = collect(DB::connection('pgsql')->select($sql)); 
 
-        $sql="select tq.question_id,ta.display_name_es,ta.answer_id FROM control_panel_course_template_answer_survey ta 
-        INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
-        where tq.poll='".$survey."'
-        order by CAST(tq.question_id AS INTEGER),CAST(ta.answer_id AS INTEGER) asc";
+
+        if($survey==1){
+            $sql="select tq.question_parent,tq.question_id,ta.display_name_es,ta.answer_id FROM control_panel_course_template_answer_survey ta 
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            where tq.poll='".$survey."'
+            order by CAST(tq.question_id AS INTEGER),CAST(ta.answer_id AS INTEGER) asc";
+
+        }
+        if($survey==3){
+            $sql="select tq.question_parent,tq.question_id,ta.display_name_es,ta.answer_id FROM control_panel_course_template_answer_survey ta 
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            where tq.poll='".$survey."'
+            order by CAST(ta.answer_id AS INTEGER) asc ,tq.question_id asc";
+
+        }
+        
         $answers_template = collect(DB::connection('pgsql')->select($sql)); 
 
         $sql="select an.display_name,an.answer_id,ta.id as id_template,an.question_parent,tq.question_id from  control_panel_course_resource_answers an

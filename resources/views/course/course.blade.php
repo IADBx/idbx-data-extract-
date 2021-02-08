@@ -27,7 +27,7 @@
               @endif
               @if ($survey_final >0)
               <div class="col-md-4">
-                <a href="{{ route('course.structure_survey',['id'=>$data->studio_id_1,'survey'=>3]) }}" class="btn btn-success">
+                <a href="{{ route('course.structure_survey_final',['id'=>$data->studio_id_1,'survey'=>3]) }}" class="btn btn-success">
                     Encuesta de satisfacción final detectada
                     </a>
               </div>
