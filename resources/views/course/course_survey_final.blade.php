@@ -68,7 +68,7 @@
                                   $id_answer=0                       
                                 ?> 
                                 @foreach($answers_edx as $answer_edx)
-                                  @if((int)$answer_edx->answer_id==(int)$answer_template->answer_id)
+                                  @if((int)$answer_edx->answer_id==(int)$answer_template->answer_id and $id_template>0)
                                     <td>
                                       {{$answer_edx->display_name}}
                                     </td>
