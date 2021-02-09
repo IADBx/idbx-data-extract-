@@ -23,7 +23,7 @@
                         <label class="col-sm-3 col-form-label" for="input-name">{{ __('Name') }}</label>
                         <div class="col-sm-8">
                             <div class="form-group{{ $errors->has('name') ? ' has-danger' : '' }}">
-                                <input class="input-name-ed form-control{{ $errors->has('name') ? ' is-invalid' : ''}}" input type="text" name="name" id="" placeholder="{{__('Name')}}" value="{{$user->name}}" required maxlength="150"/>
+                                <input class="input-name-ed form-control{{ $errors->has('name') ? ' is-invalid' : ''}}" input type="text" name="name"  placeholder="{{__('Name')}}" value="{{$user->name}}" required maxlength="150"/>
                                 <span id="" class="name-error error text-danger" for="input-name">{{ $errors->first('name') }}</span>
                               
                             </div>
@@ -33,7 +33,7 @@
                         <label class="col-sm-3 col-form-label" for="input-email-ed">{{ __('Email') }}</label>
                         <div class="col-sm-8">
                             <div class="form-group{{ $errors->has('email') ? ' has-danger' : '' }}">
-                                <input class="input-email-ed form-control{{ $errors->has('email') ? ' is-invalid' : ''}}" input type="email" name="email" id="" placeholder="{{__('Email')}}" value="{{$user->email}}" required maxlength="100"/>
+                                <input class="input-email-ed form-control{{ $errors->has('email') ? ' is-invalid' : ''}}" input type="email" name="email"  placeholder="{{__('Email')}}" value="{{$user->email}}" required maxlength="100"/>
                                 
                                 <span id="" class="email-error error text-danger" for="input-email">{{ $errors->first('name') }}</span>
                               
@@ -45,7 +45,7 @@
                         <label class="col-sm-3 col-form-label" for="input-password-ed">{{ __('Password') }}</label>
                         <div class="col-sm-8">
                           <div class="form-group{{ $errors->has('password') ? ' has-danger' : '' }}">
-                            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" id="input-password-ed" type="password" placeholder="{{ __('Password') }}" value=""  maxlength="15"/>
+                            <input class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" type="password" placeholder="{{ __('Password') }}" value=""  maxlength="15"/>
                             
                               <span id="" class="password-error error text-danger" for="input-password">{{ $errors->first('password') }}</span>
                             
@@ -56,7 +56,7 @@
                         <label class="col-sm-3 col-form-label" for="input-type-ed">{{ __('Type User') }}</label>
                         <div class="col-sm-8">
                           <div class="form-group{{ $errors->has('type') ? ' has-danger' : '' }}">
-                            <select required class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" id="input-type-ed" >
+                            <select required class="form-control{{ $errors->has('type') ? ' is-invalid' : '' }}" name="type" id="input-type-ed-{{$user->id}}" >
                                 <option value="">Choose a type</option>
                                 <option value="1" @if($user->type==1)  {{' selected' }}  @endif">Admin</option>
                                 <option value="0" @if($user->type==0)  {{' selected' }}  @endif">User</option>

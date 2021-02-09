@@ -63,7 +63,7 @@
                                 </a>
                             </td>
                             <td class="td-actions text-right">
-                                <form method="post" id="frm-usdel">
+                                <form method="post" class="frm-usdel">
                                     @csrf
                                 <input type="hidden" name="_method" value="DELETE" />
                                 <button type ="button" rel="tooltip" class="btn-delus btn btn-success btn-link" href="#" data-original-title="" title="" data-user="{{$user->id}}">
@@ -118,9 +118,9 @@
                 url:"{{route('user.store')}}",
                 data: data
             }).done(data => {
-                $("#add-user").modal('dispose');
+                $("#add-user").modal('hide');
                 Swal.fire(
-                 'User saved!',
+                'User saved!',
                 'The user was created successfully',
                 'success'
                 );
@@ -150,7 +150,7 @@
                 url:"user/"+id,
                 data: data,
             }).done(data => {
-                $("#edit-user_"+id).modal('dispose');
+                $("#edit-user_"+id).modal('hide');
                
                 Swal.fire(
                  'User updated!',
@@ -172,7 +172,7 @@
 
         $(".btn-delus").on('click', function (e){
             e.preventDefault();
-            let data = $("#frm-usdel").serializeArray();
+            let data = $(".frm-usdel").serializeArray();
             let elem = $(this);
             $('.error').removeClass('error');
             $('span').html('');
