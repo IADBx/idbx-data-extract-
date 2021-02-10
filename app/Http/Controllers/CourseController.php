@@ -872,10 +872,26 @@ class CourseController extends Controller
 
     public function structureSurveyFinal($id,$survey)
     {
-        $sql="select * from control_panel_course_template_question_survey tq
-        where tq.poll='".$survey."'
-        ORDER BY tq.question_id  asc";
-        $questions_template = collect(DB::connection('pgsql')->select($sql)); 
+        $course = Course::where('studio_id_1', $id)->first();
+
+        $is_spoc=0;
+
+        if($course->type=="SPOC"){
+            $is_spoc=1;
+        }
+
+        if($is_spoc==0){
+            $sql="select * from control_panel_course_template_question_survey tq
+                where tq.poll='".$survey."' and is_spoc=".$is_spoc."
+                ORDER BY tq.question_id  asc";            
+        }else{
+            $sql="select * from control_panel_course_template_question_survey tq
+                where tq.poll='".$survey."'
+                ORDER BY tq.question_id  asc";
+        }
+        $questions_template = collect(DB::connection('pgsql')->select($sql));
+
+         
         
         $sql="select q.display_name,q.question_id,tq.id as id_template from  control_panel_course_resource_questions q
         LEFT JOIN control_panel_course_template_question_survey tq on(tq.question_id=q.question_id and tq.poll='".$survey."')

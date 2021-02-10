@@ -90,8 +90,8 @@
                           @endforeach
 
                           @foreach($answers_edx as $answer_edx)
-                            @if($answer_edx->question_parent==$question_template->question_id)
-                              @if(empty($answer_edx->id_template))
+                            @if($answer_edx->question_parent==$question_template->question_parent)
+                              @if(empty($answer_edx->answer_id))
                               <tr>
                                 <td></td>
                                 <td style="color:orange">No se encontró en el template</td>
