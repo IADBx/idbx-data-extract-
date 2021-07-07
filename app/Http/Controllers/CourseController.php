@@ -406,7 +406,7 @@ class CourseController extends Controller
             $sql = "select ta.display_name_es as display_name,d.total,d.percentage from control_panel_course_answers_students d
             INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
             INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
-            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id and ta.poll='1')
             inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
             INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
             INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
@@ -432,8 +432,8 @@ class CourseController extends Controller
 
         } else{
             $sql ="select ta.display_name_es,d.total,d.percentage from control_panel_course_answers_students_old d
-            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
-            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER) and ta.poll='1')
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id and tq.poll='1')
             INNER JOIN metadata_courses c on(d.course_id=c.id)
             where d.poll=1
             and c.studio_id_1='".$request->get('course_id')."'
@@ -470,8 +470,8 @@ class CourseController extends Controller
             from
             ((select sum(d.total) as total,ta.display_name_es as display_name 
             from control_panel_course_answers_students_old d
-            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
-            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER) and ta.poll='1')
+            INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id and tq.poll='1')
             INNER JOIN metadata_courses c on(d.course_id=c.id)
             where d.poll=1
             and trim(c.\"Course_Name_AllEditions\")=trim((select \"Course_Name_AllEditions\" from metadata_courses 
@@ -488,7 +488,7 @@ class CourseController extends Controller
             from control_panel_course_answers_students d
             INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
             INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
-            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
+            INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id and ta.poll='1')
             inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
             INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
             INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
@@ -533,8 +533,8 @@ class CourseController extends Controller
         from
         ((select sum(d.total) as total,ta.display_name_es as display_name 
         from control_panel_course_answers_students_old d
-        INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER))
-        INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id)
+        INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER) and ta.poll='1')
+        INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id and tq.poll='1')
         INNER JOIN metadata_courses c on(d.course_id=c.id)
         where d.poll=1
         and trim(c.language)=trim((select language from metadata_courses 
@@ -552,7 +552,7 @@ class CourseController extends Controller
         from control_panel_course_answers_students d
         INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
         INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
-        INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id)
+        INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id and ta.poll='1')
         inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
         INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
         INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
