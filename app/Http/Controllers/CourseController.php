@@ -37,15 +37,50 @@ class CourseController extends Controller
         
         $report=Report::where('course_id','=',$id)->firstOrFail();                
         
+        #dd(substr($report->start_date,0,4));
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->get();
+        $registered=round($report_all->avg('registrado'));
+        $registered_total=round($report_all->sum('registrado'));
+        $registered_in_date=round($report_all->avg('in_date'));
+        $registered_in_date_total=round($report_all->sum('in_date'));
+        $participant_in_date=round($report_all->avg('in_date_participant'));
+        $participant_in_date_total=round($report_all->sum('in_date_participant'));
+        $participants=round($report_all->avg('participant'));
+        $participants_total=round($report_all->sum('participant'));
+        $verified=round($report_all->avg('verified'));
+        $verified_total=round($report_all->sum('verified'));
+        $certificates=round($report_all->avg('certificate'));
+        $certificates_total=round($report_all->sum('certificate'));
+        $countries=round($report_all->avg('country'));
+        $report_year = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date,$verified);
+        $report_year_total = array($registered_total, $registered_in_date_total,$participants_total,$certificates_total,$countries,$participant_in_date_total,$verified_total);
+        $registered=0;
+        $registered_in_date=0;
+        $participant_in_date=0;
+        $participants=0;
+        $certificates=0;
+        $verified=0;
         $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->get();
+
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
         $participant_in_date=round($report_all->avg('in_date_participant'));
         $participants=round($report_all->avg('participant'));
         $verified=round($report_all->avg('verified'));
         $certificates=round($report_all->avg('certificate'));
+
+        /*
+        $registered_total=round($report_all->sum('registrado'));
+        $registered_in_date_total=round($report_all->sum('in_date'));
+        $participant_in_date_total=round($report_all->sum('in_date_participant'));
+        $participants_total=round($report_all->sum('participant'));
+        $verified_total=round($report_all->sum('verified'));
+        $certificates_total=round($report_all->sum('certificate'));
+        */
+
         $countries=round($report_all->avg('country'));
         $report_group = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date,$verified);
+        #$report_group_total = array($registered_total, $registered_in_date_total,$participants_total,$certificates_total,$countries,$participant_in_date_total,$verified_total);
         $registered=0;
         $registered_in_date=0;
         $participant_in_date=0;
@@ -75,7 +110,21 @@ class CourseController extends Controller
         $countries=round($report_all->avg('country'));
         $report_group_all = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date);
         #dd($registrados);
-        return view('course.dashboard', compact('report','report_group','report_type','report_group_all'));
+        switch ($report->language) {
+            case "es":
+              $language = "español";
+              break;
+            case "en":
+                $language = "inglés";
+              break;
+            case "pt":
+                $language = "portugués";
+              break;
+            case "fr":
+                $language = "francés";
+            break;
+          }
+        return view('course.dashboard', compact('report','report_group','report_type','report_group_all','report_year','report_year_total','language'));
     } 
     
  
@@ -397,10 +446,29 @@ class CourseController extends Controller
         $sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
+        $language_course=$course_collection->first()->language;
         $edition_course=$course_collection->first()->edition;
         $start_date=$course_collection->first()->start_date;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
+        $type_course=$course_collection->first()->type;
+
+
+        switch ($language_course) {
+            case "es":
+              $language_course = "español";
+              break;
+            case "en":
+                $language_course = "inglés";
+              break;
+            case "pt":
+                $language_course = "portugués";
+              break;
+            case "fr":
+                $language_course = "francés";
+            break;
+          }
+       
 
         if($year_course>=2020){
             $sql = "select ta.display_name_es as display_name,d.total,d.percentage from control_panel_course_answers_students d
@@ -456,11 +524,120 @@ class CourseController extends Controller
 
         }  
 
+        /* version for year*/
+        $year_data=0;
+        $answers_display_name_year=[];
+        $answers_total_year=[];
+        $answers_percentage_year=[]; 
+        if($year_course>=2020){
+            $sql="select * from metadata_courses
+            where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+            and start_date <= (select start_date from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."') and type='$type_course'
+            and EXTRACT(YEAR FROM start_date)=$year_course" ;
+            $answers = DB::connection('pgsql')->select($sql); 
+            $answers_collection=collect($answers);
+                if($answers_collection->count()>0){
+                    $year_data=1;
+                    $sql="select sum(CAST (d.total AS INTEGER)) as total,ta.display_name_es as display_name  
+                    from control_panel_course_answers_students d
+                    INNER JOIN control_panel_course_resource_questions q on(d.question_id=q.module_id)
+                    INNER JOIN control_panel_course_resource_answers an on(d.answer_id=an.module_id)
+                    INNER JOIN control_panel_course_template_answer_survey ta on(an.answer_id = ta.answer_id and ta.poll='1')
+                    inner JOIN control_panel_course_resources r on (r.module_id=q.resource_id)
+                    INNER JOIN control_panel_course_verticals v on(v.module_id=r.vertical_id)
+                    INNER JOIN control_panel_course_sequentials s on (s.module_id=v.sequential_id)
+                    INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
+                    INNER JOIN metadata_courses c on(ch.course_id=c.studio_id_1)
+                    where  q.question_id='".$request->get('question')."' and v.poll='1'
+                    and trim(c.\"Course_Name_AllEditions\")=trim((select \"Course_Name_AllEditions\" from metadata_courses 
+                        where studio_id_1='".$request->get('course_id')."'))
+                    and c.start_date <= (select start_date from metadata_courses 
+                        where studio_id_1='".$request->get('course_id')."')
+                    and trim(c.type)=trim((select type from metadata_courses 
+                        where studio_id_1='".$request->get('course_id')."')) 
+                    and EXTRACT(YEAR FROM c.start_date)=$year_course
+                    GROUP BY ta.id,ta.display_name_es
+                    ORDER BY ta.id asc";
+                    $answers = DB::connection('pgsql')->select($sql); 
+                    $answers_collection=collect($answers);
+                    if ($answers_collection->count()>0){
+                        $sample=$answers_collection->sum('total');          
+                        foreach ($answers_collection as $answer) {
+                            array_push($answers_display_name_year,$answer->display_name);
+                            array_push($answers_total_year,$answer->total);
+                            if($sample>0){
+                                array_push($answers_percentage_year,round(($answer->total/$sample)*100,2));
+                            }else{
+                                array_push($answers_percentage_year,0);
+                            }
+                        }
+
+                    }else{
+                        $year_data= 0;
+                    }
+                }else{
+                    $year_data= 0;
+                }
+        }else{
+            $sql="select * from metadata_courses
+            where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."')
+            and start_date <= (select start_date from metadata_courses 
+            where studio_id_1='".$request->get('course_id')."') and type='$type_course'
+            and EXTRACT(YEAR FROM start_date)=$year_course" ;
+            $answers = DB::connection('pgsql')->select($sql); 
+            $answers_collection=collect($answers);
+                if($answers_collection->count()>0){
+                    $year_data= 1;
+                    $sql="select sum(d.total) as total,ta.display_name_es as display_name 
+                    from control_panel_course_answers_students_old d
+                    INNER JOIN control_panel_course_template_answer_survey ta on(d.answer_id = CAST (ta.answer_id AS INTEGER) and ta.poll='1')
+                    INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id and tq.poll='1')
+                    INNER JOIN metadata_courses c on(d.course_id=c.id)
+                    where d.poll=1
+                    and trim(c.\"Course_Name_AllEditions\")=trim((select \"Course_Name_AllEditions\" from metadata_courses 
+                    where studio_id_1='".$request->get('course_id')."'))
+                    and c.start_date <= (select start_date from metadata_courses 
+                    where studio_id_1='".$request->get('course_id')."')
+                    and trim(c.type)=trim((select type from metadata_courses 
+                        where studio_id_1='".$request->get('course_id')."'))
+                    and tq.question_id='".$request->get('question')."' 
+                    and EXTRACT(YEAR FROM c.start_date)=$year_course
+                    GROUP BY ta.id,ta.display_name_es
+                    ORDER BY ta.id asc)";
+                    $answers = DB::connection('pgsql')->select($sql); 
+                    $answers_collection=collect($answers);
+                    if ($answers_collection->count()>0){
+                        $sample=$answers_collection->sum('total');          
+                        foreach ($answers_collection as $answer) {
+                            array_push($answers_display_name_year,$answer->display_name);
+                            array_push($answers_total_year,$answer->total);
+                            if($sample>0){
+                                array_push($answers_percentage_year,round(($answer->total/$sample)*100,2));
+                            }else{
+                                array_push($answers_percentage_year,0);
+                            }
+                        }
+
+                    }else{
+                        $year_data= 0;
+                    }
+
+                }else{
+                    $year_data= 0;
+                } 
+        }
+
+
+        /* end version for year */
+
         $sql="select * from metadata_courses
         where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')
         and start_date < (select start_date from metadata_courses 
-        where studio_id_1='".$request->get('course_id')."')";
+        where studio_id_1='".$request->get('course_id')."') and type='$type_course'" ;
         $answers = DB::connection('pgsql')->select($sql); 
         $answers_collection=collect($answers);
 
@@ -584,7 +761,7 @@ class CourseController extends Controller
         } 
 
         
-        return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data]);
+        return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data,'year_data'=>$year_data,'display_name_year'=>$answers_display_name_year,'total_year'=>$answers_total_year,'percentage_year'=>$answers_percentage_year, 'language_course'=>$language_course]);
         
     }
 

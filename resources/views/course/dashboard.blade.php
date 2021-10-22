@@ -31,21 +31,29 @@
                     <tr>
                         <th class="text-center">Indicador</th>
                         <th>Edición {{$report->edition}} </th>
+                        <?php if($report_year[0]>0){?>
+                          <th>Año {{substr($report->start_date,0,4)}} </th>
+                        <?php }?>
+                        
                         <?php if($report_group[0]>0){?>
-                          <th>Promedio ediciones anteriores</th>
+                          <th>Promedio <br>ediciones anteriores</th>
                         <?php }?>
                         
                         <?php if($report_group[0]>0){?>
                           <!-- <th>Promedio todas las ediciones hasta la edición {{$report->edition}}</th> -->
                         <?php }?>                        
 
-                        <th>Promedio histórico<br> MOOCs finalizados en español<br> del programa IDBx*</th>
+                        <th>Promedio histórico<br> {{$report->type}}s finalizados en {{$language}}<br> del programa IDBx*</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
                         <td>Registrados totales <sup>1</sup> </td>
                         <td>{{$report->registrado}}</td>
+
+                        <?php if($report_year_total[0]>0){ ?>
+                          <td>{{$report_year_total[0]}}</td>                          
+                        <?php }?>
 
                         <?php if($report_group[0]>0){ ?>
                           <td>{{$report_group[0]}}</td>                          
@@ -61,6 +69,10 @@
                       <td>Registrados a la fecha de cierre <sup>2</sup></td>
                       <td>{{$report->in_date}}</td>
 
+                      <?php if($report_year_total[0]>0){ ?>
+                          <td>{{$report_year_total[1]}}</td>                          
+                        <?php }?>
+
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[1]}}</td>                                              
                       <?php } ?>
@@ -74,6 +86,10 @@
                     <tr>
                       <td>Verificados a la fecha de cierre </td>
                       <td>{{$report->verified}}</td>
+
+                      <?php if($report_year_total[0]>0){ ?>
+                          <td>{{$report_year_total[6]}}</td>                          
+                        <?php }?>
 
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[6]}}</td>                                              
@@ -89,6 +105,10 @@
                       <td>Países representados   <sup>3</sup></td>
                       <td>{{$report->country}}</td>
 
+                      <?php if($report_year[0]>0){ ?>
+                          <td>{{$report_year[4]}}</td>                          
+                        <?php }?>
+
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[4]}}</td>                      
                       <?php }  ?>
@@ -102,6 +122,12 @@
                     <tr>
                       <td>Participantes<sup>4</sup><br>(% de registrados totales)</td>
                       <td>{{$report->participant}}<br>({{round(($report->participant/$report->registrado)*100,2)}}%)</td>
+
+                      <?php if($report_year_total[0]>0){ ?>                          
+                          <td>{{$report_year_total[2]}}<br>({{round(($report_year_total[2]/$report_year_total[0])*100,2)}}%)</td>                        
+                        <?php }?>
+
+
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[2]}}<br>({{round(($report_group[2]/$report_group[0])*100,2)}}%)</td>
                       <?php }?>
@@ -113,6 +139,11 @@
                     <tr>
                       <td>Participantes a la fecha de cierre <sup>5</sup> <br>(% de registrados al cierre)</td>
                       <td>{{$report->in_date_participant}}<br>({{round(($report->in_date_participant/$report->in_date)*100,2)}}%)</td>
+
+                      <?php if($report_year_total[0]>0){ ?>
+                        <td>{{$report_year_total[5]}}<br>({{round(($report_year_total[5]/$report_year_total[1])*100,2)}}%)</td>
+                      <?php }?>
+
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[5]}}<br>({{round(($report_group[5]/$report_group[1])*100,2)}}%)</td>
                       <?php }?>
@@ -123,6 +154,13 @@
                       <td>Certificados <sup>6</sup>  <br>(% de participantes al cierre)<br>(% de verificados)</td>
                       <td>{{$report->certificate}}<br>({{round(($report->certificate/$report->in_date_participant)*100,2)}}%)
                           <br>({{$report->verified == 0 ? 0 : round(($report->certificate/$report->verified)*100,2)}}%)</td>
+
+                      <?php if($report_year[0]>0){ ?>
+                        <td>{{$report_year_total[3]}}<br>({{$report_year_total[5] == 0 ? 0 :round(($report_year_total[3]/$report_year_total[5])*100,2)}}%)
+                        <br>({{$report_year_total[6] == 0 ? 0 : round(($report_year_total[3]/$report_year_total[6])*100,2)}}%)</td>
+                      <?php }?>
+
+
                       <?php if($report_group[0]>0){ ?>
                         <td>{{$report_group[3]}}<br>({{$report_group[5] == 0 ? 0 :round(($report_group[3]/$report_group[5])*100,2)}}%)
                         <br>({{$report_group[6] == 0 ? 0 : round(($report_group[3]/$report_group[6])*100,2)}}%)</td>
@@ -533,9 +571,9 @@
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage'],
-              };
+                };
 
-              var trace2 = {
+                var trace2 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
                 name: 'Historico MOOCs español',
@@ -543,11 +581,21 @@
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_historical'],
-              };
+                };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Acumulado de las ediciones '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_historical'],
+                };              
 
-              var layout = {
+                var data = [trace1, trace2, trace3];
+
+                var layout = {
                 barmode: 'group',
                 margin: {
                   l: 40,
@@ -567,36 +615,48 @@
                Plotly.newPlot('question_8', data,layout);
               } else{
                 var trace1 = {
-                x: data_question['display_name'],
-                y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
-                type: 'bar',
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['percentage'],
-              };
+                  x: data_question['display_name'],
+                  y: data_question['percentage'],
+                  name: 'Edición seleccionada:'+data_question['edition_course'] ,
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage'],
+                };
 
-              var trace2 = {
-                x: data_question['display_name_old'],
-                y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
-                type: 'bar',
-                hoverinfo: 'none',
-                textposition: 'auto',
-                text: data_question['percentage_old'],
-              };
+                var trace2 = {
+                  x: data_question['display_name_old'],
+                  y: data_question['percentage_old'],
+                  name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['percentage_old'],
+                };
 
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_historical'],
               };
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              };  
 
-              var data = [trace1, trace2, trace3];
+              console.log('dataaaa'+data_question['percentage_year']);
+              console.log('dataaaa11111'+data_question['display_name_year']);
+
+              var data = [trace1,trace4,trace2, trace3 ];
 
               var layout = {
                 barmode: 'group',
@@ -650,7 +710,17 @@
                   text: data_question['percentage_historical'],
                 };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              };  
+
+              var data = [trace1, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -701,7 +771,17 @@
                 text: data_question['percentage_historical'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              };  
+
+              var data = [trace1, trace2, trace3, trace4];
 
               var layout = {
                 barmode: 'group',
@@ -753,7 +833,17 @@
                   text: data_question['percentage_historical'],
                 };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -804,7 +894,17 @@
                 text: data_question['percentage_historical'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3, trace4];
 
               var layout = {
                 barmode: 'group',
@@ -855,7 +955,17 @@
                   text: data_question['percentage_historical'],
                   };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -906,7 +1016,17 @@
                 text: data_question['percentage_historical'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3, trace4];
 
               var layout = {
                 barmode: 'group',
@@ -957,7 +1077,17 @@
                   text: data_question['percentage_historical'],
                 };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -1008,7 +1138,17 @@
                 text: data_question['percentage_historical'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3, trace4];
 
               var layout = {
                 barmode: 'group',
@@ -1059,7 +1199,17 @@
                   text: data_question['percentage_historical'],
                 };
 
-              var data = [trace1, trace2];
+                var trace3 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -1110,7 +1260,17 @@
                 text: data_question['percentage_historical'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: data_question['display_name_year'],
+                y: data_question['percentage_year'],
+                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['percentage_year'],
+              }; 
+
+              var data = [trace1, trace2, trace3, trace4];
 
               var layout = {
                 barmode: 'group',
