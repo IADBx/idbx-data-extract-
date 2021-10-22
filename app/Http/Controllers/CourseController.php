@@ -34,11 +34,12 @@ class CourseController extends Controller
 
     public function dashboard($id)
     {    
-        
+        $versions_total=1;
         $report=Report::where('course_id','=',$id)->firstOrFail();                
         
         #dd(substr($report->start_date,0,4));
         $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->get();
+        $versions_total = $report_all->count();
         $registered=round($report_all->avg('registrado'));
         $registered_total=round($report_all->sum('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
@@ -54,6 +55,8 @@ class CourseController extends Controller
         $countries=round($report_all->avg('country'));
         $report_year = array($registered, $registered_in_date,$participants,$certificates,$countries,$participant_in_date,$verified);
         $report_year_total = array($registered_total, $registered_in_date_total,$participants_total,$certificates_total,$countries,$participant_in_date_total,$verified_total);
+
+
         $registered=0;
         $registered_in_date=0;
         $participant_in_date=0;
@@ -124,7 +127,7 @@ class CourseController extends Controller
                 $language = "francés";
             break;
           }
-        return view('course.dashboard', compact('report','report_group','report_type','report_group_all','report_year','report_year_total','language'));
+        return view('course.dashboard', compact('report','report_group','report_type','report_group_all','report_year','report_year_total','language','versions_total'));
     } 
     
  

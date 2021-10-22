@@ -32,7 +32,11 @@
                         <th class="text-center">Indicador</th>
                         <th>Edición {{$report->edition}} </th>
                         <?php if($report_year[0]>0){?>
-                          <th>Año {{substr($report->start_date,0,4)}} </th>
+                          <?php if($versions_total>1){?>
+                            <th>Año {{substr($report->start_date,0,4)}}<br> ({{$versions_total}} ediciones) </th>
+                          <?php } else{?>
+                            <th>Año {{substr($report->start_date,0,4)}}<br> ({{$versions_total}} edición) </th>
+                          <?php }?>    
                         <?php }?>
                         
                         <?php if($report_group[0]>0){?>
@@ -744,7 +748,7 @@
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
+                name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -754,7 +758,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -764,7 +768,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -774,14 +778,14 @@
               var trace4 = {
                 x: data_question['display_name_year'],
                 y: data_question['percentage_year'],
-                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_year'],
               };  
 
-              var data = [trace1, trace2, trace3, trace4];
+              var data = [trace1,trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -816,7 +820,7 @@
                   var trace1 = {
                   x: data_question['display_name'],
                   y: data_question['percentage'],
-                  name: 'Edición:'+data_question['edition_course'] ,
+                  name: 'Edición seleccionada:'+data_question['edition_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -867,7 +871,7 @@
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
+                name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -877,7 +881,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -887,7 +891,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -897,14 +901,14 @@
               var trace4 = {
                 x: data_question['display_name_year'],
                 y: data_question['percentage_year'],
-                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_year'],
               }; 
 
-              var data = [trace1, trace2, trace3, trace4];
+              var data = [trace1,trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -938,7 +942,7 @@
                   var trace1 = {
                   x: data_question['display_name'],
                   y: data_question['percentage'],
-                  name: 'Edición:'+data_question['edition_course'] ,
+                  name: 'Edición seleccionada:'+data_question['edition_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -989,7 +993,7 @@
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
+                name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -999,7 +1003,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1009,7 +1013,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1019,14 +1023,14 @@
               var trace4 = {
                 x: data_question['display_name_year'],
                 y: data_question['percentage_year'],
-                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_year'],
               }; 
 
-              var data = [trace1, trace2, trace3, trace4];
+              var data = [trace1,trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -1060,7 +1064,7 @@
                   var trace1 = {
                   x: data_question['display_name'],
                   y: data_question['percentage'],
-                  name: 'Edición:'+data_question['edition_course'] ,
+                  name: 'Edición seleccionada:'+data_question['edition_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1111,7 +1115,7 @@
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
+                name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1121,7 +1125,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1131,7 +1135,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1141,14 +1145,14 @@
               var trace4 = {
                 x: data_question['display_name_year'],
                 y: data_question['percentage_year'],
-                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_year'],
               }; 
 
-              var data = [trace1, trace2, trace3, trace4];
+              var data = [trace1,trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -1182,7 +1186,7 @@
                   var trace1 = {
                   x: data_question['display_name'],
                   y: data_question['percentage'],
-                  name: 'Edición:'+data_question['edition_course'] ,
+                  name: 'Edición seleccionada:'+data_question['edition_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1233,7 +1237,7 @@
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
-                name: 'Edición:'+data_question['edition_course'] ,
+                name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1243,7 +1247,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['percentage_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1253,7 +1257,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1263,14 +1267,14 @@
               var trace4 = {
                 x: data_question['display_name_year'],
                 y: data_question['percentage_year'],
-                name: 'Histórico del curso del año '+ (data_question['year_course']),
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['percentage_year'],
               }; 
 
-              var data = [trace1, trace2, trace3, trace4];
+              var data = [trace1,trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',
@@ -1428,7 +1432,7 @@
               var trace2 = {
                 x: ['Ganancia de aprendizaje'],
                 y: data_question['average_question_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1539,7 +1543,7 @@
               var trace2 = {
                 x: data_question['display_name_old'],
                 y: data_question['average_question_old'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
