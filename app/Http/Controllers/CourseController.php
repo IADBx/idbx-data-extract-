@@ -134,14 +134,14 @@ class CourseController extends Controller
 
     public function surveyMqi(Request $request)
     {
-        /*
-        $sql="select * from control_panel_course_report_general where  studio_id_1='".$request->get('course_id')."'";
+        
+        $sql="select * from control_panel_course_report_general where  course_id='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $start_date=$course_collection->first()->start_date;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
-        */
+        
 
         /*
         $report=Report::where('course_id','=',$request->get('course_id'))->firstOrFail(); 
@@ -190,7 +190,7 @@ class CourseController extends Controller
         $sql="select * from metadata_courses
         where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')
-        and EXTRACT(YEAR FROM start_date)=2021
+        and EXTRACT(YEAR FROM start_date)=$year_course
         and start_date < (select start_date from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')";
         $answers = DB::connection('pgsql')->select($sql); 
