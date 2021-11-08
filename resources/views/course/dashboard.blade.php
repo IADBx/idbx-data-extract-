@@ -182,7 +182,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="4"><strong>Nota: </strong><p>se hace el comparativo con los MOOC que ya están cerrados. Con fecha de corte {{$report->end_date}}. 
+                    <td colspan="4"><strong>Nota: </strong><p>Se hace la comparación con los MOOC que ya están cerrados. Con fecha de corte {{$report->end_date}}. 
                     <br>(*) Hasta {{$report->end_date}}</p></td>
                     </td>                    
                   </tr>
