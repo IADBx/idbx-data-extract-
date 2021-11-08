@@ -2071,7 +2071,17 @@
                   text: data_question['mqi_old'],
                   };
 
-              var data = [trace1, trace2];
+                  var trace3 = {
+                  x: ['MQI'],
+                  y: data_question['mqi_year'],
+                  name: 'MOOC',
+                  type: 'bar',
+                  hoverinfo: 'none',
+                  textposition: 'auto',
+                  text: data_question['mqi_old'],
+                  };                  
+
+              var data = [trace1,trace3, trace2];
 
               var layout = {
                 barmode: 'group',
@@ -2099,7 +2109,7 @@
               var trace2 = {
                 x: ['MQI'],
                 y: data_question['mqi_group'],
-                name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
+                name: 'Promedio (%) histórico del curso hasta la edición '+ (data_question['edition_course']-1) +'<br> desde la primera versión del curso',
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -2109,14 +2119,24 @@
               var trace3 = {
                 x: ['MQI'],
                 y: data_question['mqi_old'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
                 text: data_question['mqi_old'],
               };
 
-              var data = [trace1, trace2, trace3];
+              var trace4 = {
+                x: ['MQI'],
+                y: data_question['mqi_year'],
+                name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
+                type: 'bar',
+                hoverinfo: 'none',
+                textposition: 'auto',
+                text: data_question['mqi_year'],
+              };
+
+              var data = [trace1, trace4, trace2, trace3];
 
               var layout = {
                 barmode: 'group',

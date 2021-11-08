@@ -135,12 +135,30 @@ class CourseController extends Controller
     public function surveyMqi(Request $request)
     {
         
-        $sql="select * from control_panel_course_report_general where  course_id='".$request->get('course_id')."'";
+        $sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $start_date=$course_collection->first()->start_date;
+        $language_course=$course_collection->first()->language;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
+
+
+
+        switch ($language_course) {
+            case "es":
+              $language_course = "español";
+              break;
+            case "en":
+                $language_course = "inglés";
+              break;
+            case "pt":
+                $language_course = "portugués";
+              break;
+            case "fr":
+                $language_course = "francés";
+            break;
+          }
         
 
         /*
@@ -152,6 +170,7 @@ class CourseController extends Controller
         $old_data= 0;
         $year_data= 0;
         $mqi_data_group=[];
+        $mqi_data_year=[];
         $sql="select * from control_panel_course_report_mqi where  course_id='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
@@ -187,15 +206,35 @@ class CourseController extends Controller
         
 
 
+
         $sql="select * from metadata_courses
         where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')
         and EXTRACT(YEAR FROM start_date)=$year_course
-        and start_date < (select start_date from metadata_courses 
+        and start_date <= (select start_date from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')";
         $answers = DB::connection('pgsql')->select($sql); 
         $answers_collection=collect($answers);
+        
 
+        if($answers_collection->count()>0){
+            $year_data= 1;
+            $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
+            INNER JOIN metadata_courses c on(m.id=c.id)
+            where
+            c.\"Course_Name_AllEditions\" = 
+            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."') 
+            and EXTRACT(YEAR FROM c.start_date)=$year_course 
+            and c.start_date <= 
+            (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
+            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))";
+            $course = DB::connection('pgsql')->select($sql);
+            $course_collection=collect($course);
+            $mqi_course=$course_collection->first()->average_group;
+            array_push($mqi_data_year,round($mqi_course,2));   
+                     
+        }
+        
 
 
 
@@ -219,7 +258,7 @@ class CourseController extends Controller
 
 
 
-        return response()->json(['mqi'=>$mqi_data,'mqi_group'=>$mqi_data_group,'mqi_old'=>$mqi_data_old,'old_data'=>$old_data,'edition_course'=>$edition_course]);
+        return response()->json(['mqi'=>$mqi_data,'mqi_group'=>$mqi_data_group,'mqi_old'=>$mqi_data_old,'old_data'=>$old_data,'mqi_year'=>$mqi_data_year,'year_data'=>$year_data,'edition_course'=>$edition_course,'language_course'=>$language_course,'year_course'=>$year_course]);
 
     }
 
