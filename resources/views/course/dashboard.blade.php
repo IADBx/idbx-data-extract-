@@ -10,6 +10,7 @@
             <h4 class="card-title ">{{$report->name}}</h4>
             <h4 class="card-title "> Fecha de inicio: {{$report->start_date}}</h4>
             <h4 class="card-title "> Fecha de fin: {{$report->end_date}}</h4>
+            <h4 class="card-title "> Fecha de actualización del reporte: </h4>
             <input type="hidden" id="course_id" name="course_id" value='{{$report->course_id}}'>
           </div> <!-- end card-header -->
           <div class="card-body"> 
@@ -25,6 +26,7 @@
           </div>
           <div class="card-body">            
             <h4><b>Fuente:</b> IDBx Dinamic Report</h4>
+            <h4><b>Fecha del data-package :</b> 2021-10-31</h4>
             <div class="col-md-12">
               <table class="table table-striped">
                 <thead>
