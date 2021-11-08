@@ -193,7 +193,7 @@ class CourseController extends Controller
         where studio_id_1='".$request->get('course_id')."')";
         $answers = DB::connection('pgsql')->select($sql); 
         $answers_collection=collect($answers);
-        
+        /*
         if($answers_collection->count()>0){
             $year_data= 1;
             $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
@@ -210,6 +210,7 @@ class CourseController extends Controller
             $mqi_course=$course_collection->first()->average_group;
             array_push($mqi_data_year,round($mqi_course,2));            
         }
+        */
 
         // ******************fin mqi x year  ***************************
 
