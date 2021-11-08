@@ -134,13 +134,15 @@ class CourseController extends Controller
 
     public function surveyMqi(Request $request)
     {
-
+        /*
         $sql="select * from control_panel_course_report_general where  studio_id_1='".$request->get('course_id')."'";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $start_date=$course_collection->first()->start_date;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
+        */
+
         /*
         $report=Report::where('course_id','=',$request->get('course_id'))->firstOrFail(); 
         $mqi_data=[];
