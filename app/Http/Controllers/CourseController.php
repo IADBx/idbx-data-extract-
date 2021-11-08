@@ -185,36 +185,20 @@ class CourseController extends Controller
         }
 
         
-        // *********************** mqi x year *********************************
+
 
         $sql="select * from metadata_courses
         where \"Course_Name_AllEditions\"=(select \"Course_Name_AllEditions\" from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')
-        and EXTRACT(YEAR FROM start_date)=$year_course 
+        and EXTRACT(YEAR FROM start_date)=2021
         and start_date < (select start_date from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')";
         $answers = DB::connection('pgsql')->select($sql); 
         $answers_collection=collect($answers);
-        /*
-        if($answers_collection->count()>0){
-            $year_data= 1;
-            $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
-            INNER JOIN metadata_courses c on(m.id=c.id)
-            where
-            c.\"Course_Name_AllEditions\" = 
-            (select \"Course_Name_AllEditions\" from metadata_courses where studio_id_1='".$request->get('course_id')."')
-             and EXTRACT(YEAR FROM start_date)=$year_course 
-             and c.start_date < 
-             (select start_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
-            and trim(c.type)=trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))";
-            $course = DB::connection('pgsql')->select($sql);
-            $course_collection=collect($course);
-            $mqi_course=$course_collection->first()->average_group;
-            array_push($mqi_data_year,round($mqi_course,2));            
-        }
-        */
 
-        // ******************fin mqi x year  ***************************
+
+
+
 
         $sql="select avg(CAST(m.mqi AS FLOAT)) as average_group from control_panel_course_report_mqi as m
         INNER JOIN metadata_courses c on(m.id=c.id)
