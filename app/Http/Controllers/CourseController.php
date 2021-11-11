@@ -38,7 +38,7 @@ class CourseController extends Controller
         $report=Report::where('course_id','=',$id)->firstOrFail();                
         
         #dd(substr($report->start_date,0,4));
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->where('type','=',trim($report->type))->get();
         $versions_total = $report_all->count();
         $registered=round($report_all->avg('registrado'));
         $registered_total=round($report_all->sum('registrado'));
@@ -63,7 +63,7 @@ class CourseController extends Controller
         $participants=0;
         $certificates=0;
         $verified=0;
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->where('type','=',trim($report->type))->get();
 
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
@@ -104,7 +104,7 @@ class CourseController extends Controller
         $registered_in_date=0;
         $participants=0;
         $certificates=0;              
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->where('type','=',trim($report->type))->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
         $participant_in_date=round($report_all->avg('in_date_participant'));
