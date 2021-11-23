@@ -2064,7 +2064,7 @@
                 var trace2 = {
                   x: ['MQI'],
                   y: data_question['mqi_old'],
-                  name: 'Historico MOOCs español',
+                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -2074,7 +2074,7 @@
                   var trace3 = {
                   x: ['MQI'],
                   y: data_question['mqi_year'],
-                  name: 'MOOC',
+                  name: 'Promedio (%) de las ediciones del '+ (data_question['year_course']) + '<br> incluye la edición seleccionada',
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
