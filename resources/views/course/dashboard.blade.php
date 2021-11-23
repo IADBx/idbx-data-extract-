@@ -1386,7 +1386,7 @@
                 var trace2 = {
                   x: ['Ganancia de aprendizaje'],
                   y: data_question['average_question_historical'],
-                  name: 'Historico MOOCs español',
+                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1442,7 +1442,7 @@
               var trace3 = {
                 x: ['Ganancia de aprendizaje'],
                 y: data_question['average_question_historical'],
-                name: 'Historico MOOCs español',
+                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',

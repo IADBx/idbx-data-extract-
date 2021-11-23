@@ -427,11 +427,28 @@ class CourseController extends Controller
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
         $edition_course=$answers_collection->first()->edition;
+        $language_course=$answers_collection->first()->language;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
         $answers_average_question=[];  
-        $total_gain=0;      
+        $total_gain=0;     
+        
+        
+        switch ($language_course) {
+            case "es":
+              $language_course = "español";
+              break;
+            case "en":
+                $language_course = "inglés";
+              break;
+            case "pt":
+                $language_course = "portugués";
+              break;
+            case "fr":
+                $language_course = "francés";
+            break;
+          }
 
         foreach ($answers_collection as $answer) {
             array_push($answers_display_name,$answer->display_name_es);
@@ -502,7 +519,7 @@ class CourseController extends Controller
             $total_gain_historical=round($answer->average_group,2);
         }  
 
-        return response()->json(['total_gain'=>$total_gain,'total_gain_historical'=>$total_gain_historical,'display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course]);
+        return response()->json(['total_gain'=>$total_gain,'total_gain_historical'=>$total_gain_historical,'display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course,'language_course'=>$language_course]);
 
     }
 
