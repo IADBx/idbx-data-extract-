@@ -26,7 +26,6 @@
           </div>
           <div class="card-body">            
             <h4><b>Fuente:</b> IDBx Dinamic Report</h4>
-            <h4><b>Fecha del data-package :</b> 2021-10-31</h4>
             <div class="col-md-12">
               <table class="table table-striped">
                 <thead>
