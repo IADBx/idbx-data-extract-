@@ -22,7 +22,7 @@
       <div class="col-md-12">
         <div class="card">
           <div class="card-header card-header-primary">
-            <h4 class="card-title ">Visión general del curso en comparación al promedio de todos los cursos similares (MOOC) del programa IDBx</h4>
+            <h4 class="card-title ">Visión general del curso en comparación al promedio de todos los cursos similares ({{$report->type}}) del programa IDBx</h4>
           </div>
           <div class="card-body">            
             <h4><b>Fuente:</b> IDBx Dinamic Report</h4>
@@ -183,7 +183,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
-                    <td colspan="4"><strong>Nota: </strong><p>Se hace la comparación con los MOOC que ya están cerrados. Con fecha de corte {{$report->end_date}}. 
+                    <td colspan="4"><strong>Nota: </strong><p>Se hace la comparación con los {{$report->type}} que ya están cerrados. Con fecha de corte {{$report->end_date}}. 
                     <br>(*) Hasta {{$report->end_date}}</p></td>
                     </td>                    
                   </tr>
@@ -399,8 +399,8 @@
             </div><!-- end row -->           
             <div class="row">
               <div class="col-md-12">
-                <p>•  La ganancia de aprendizaje de este MOOC, por parte de los participantes, es de <strong><span id='ganancia_individual'></span></strong>  puntos.</p>
-                <p>•  La ganancia de aprendizaje promedio para todos los MOOC, por parte de los participantes, es de <strong><span id='ganancia_individual_historical'></span>  puntos.<p>
+                <p>•  La ganancia de aprendizaje de este {{$report->type}}, por parte de los participantes, es de <strong><span id='ganancia_individual'></span></strong>  puntos.</p>
+                <p>•  La ganancia de aprendizaje promedio para todos los {{$report->type}}s, por parte de los participantes, es de <strong><span id='ganancia_individual_historical'></span>  puntos.<p>
               </div>
             </div> <!-- end row -->
             <div class="row justify-content-md-center">              
@@ -408,7 +408,7 @@
             </div>
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los MOOC </strong></h4>                
+                <h4><strong>3. Promedio de logro de objetivos de aprendizaje, comparado con promedio general de los {{$report->type}}s </strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 1.1</strong></h4>                
@@ -430,7 +430,7 @@
 
             <div class="row">
               <div class="col-md-12">
-                <h4><strong>4a. Calidad de los contenidos del curso en general, comparado con el promedio general de los MOOC  </strong></h4>                
+                <h4><strong>4a. Calidad de los contenidos del curso en general, comparado con el promedio general de los {{$report->type}}s  </strong></h4>                
               </div>              
               <div class="col-md-12">
                 <h4><strong>Fuente: Encuesta final de satisfacción, pregunta 3</strong></h4>                
@@ -495,7 +495,7 @@
             <div class="row">
               <div class="col-md-12">
                 <p>•  El promedio de la calidad de los recursos del curso de {{$report->name}} es de <strong><span id='calidad_individual'></span> puntos</strong> de un máximo de 5.</p>
-                <p>•  El promedio histórico de la calidad de todos los recursos de todos los MOOC es de  <strong><span id='calidad_individual_historical'></span> puntos </strong>de un máximo de 5.<p>
+                <p>•  El promedio histórico de la calidad de todos los recursos de todos los {{$report->type}}s es de  <strong><span id='calidad_individual_historical'></span> puntos </strong>de un máximo de 5.<p>
               </div>
             </div> <!-- end row -->
 
@@ -522,7 +522,7 @@
             </div>  
             <div class="row">
                 <div class="col-md-12">
-                  <h4><strong>7.  Índice de calidad del MOOC (MQI)  </strong></h4>                
+                  <h4><strong>7.  Índice de calidad del {{$report->type}} (MQI)  </strong></h4>                
                 </div>              
                 <div class="col-md-12">
                     <p>Rating:</p>
@@ -568,6 +568,8 @@
            success:function(data_question){                
               $("#sample_question_8").html(data_question['sample_survey']);
               if(data_question['old_data']==0){
+                console.log(data_question['display_name_year']);
+                console.log(data_question['percentage_year']);
                 var trace1 = {
                 x: data_question['display_name'],
                 y: data_question['percentage'],
@@ -581,7 +583,7 @@
                 var trace2 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los'+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -595,7 +597,7 @@
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
-                text: data_question['percentage_historical'],
+                text: data_question['percentage_year'],
                 };              
 
                 var data = [trace1, trace2, trace3];
@@ -642,7 +644,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's<br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -706,7 +708,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['percentage_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's<br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -767,7 +769,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -829,7 +831,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['percentage_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's<br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -890,7 +892,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -951,7 +953,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['percentage_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1012,7 +1014,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1073,7 +1075,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['percentage_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1134,7 +1136,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1195,7 +1197,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['percentage_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1256,7 +1258,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['percentage_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1303,7 +1305,7 @@
            data:{course_id:course_id,question:1},           
            success:function(data_question){  
              $("#sample_question_1").html(data_question['sample_survey']);
-             console.log(data_question)                          
+                              
               var data = [{
                 type: 'bar',
                 y: data_question['percentage'],
@@ -1385,7 +1387,7 @@
                 var trace2 = {
                   x: ['Ganancia de aprendizaje'],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los'+ data_question['type_course']+'s <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1441,7 +1443,7 @@
               var trace3 = {
                 x: ['Ganancia de aprendizaje'],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los ' + data_question['type_course'] + 's <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1497,7 +1499,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +' <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1552,7 +1554,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1597,8 +1599,9 @@
            success:function(data_question){        
                 $("#sample_final_question_3_a").html(data_question['sample_survey']);       
                 if(data_question['old_data']==0){
+                  var labelText ='Calidad de los recursos de aprendizaje de este ' + data_question['type_course']
                   var trace1 = {
-                  x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                  x: [labelText],
                   y: data_question['average_question'],
                   name: 'Edición seleccionada:'+data_question['edition_course'] ,
                   type: 'bar',
@@ -1608,9 +1611,9 @@
                 };
 
                 var trace2 = {
-                  x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                  x: [labelText],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +  's <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1643,8 +1646,9 @@
 
                Plotly.newPlot('final_question_3_a', data,layout);
               } else{
+                var labelText ='Calidad de los recursos de aprendizaje de este ' + data_question['type_course']
                 var trace1 = {
-                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                x: [labelText],
                 y: data_question['average_question'],
                 name: 'Edición seleccionada:'+data_question['edition_course'] ,
                 type: 'bar',
@@ -1654,7 +1658,7 @@
               };
 
               var trace2 = {
-                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                x: [labelText],
                 y: data_question['average_question_old'],
                 name: 'Histórico del curso hasta la edición '+ (data_question['edition_course']-1),
                 type: 'bar',
@@ -1664,9 +1668,9 @@
               };
 
               var trace3 = {
-                x: ['Calidad de los recursos de aprendizaje de este MOOC'],
+                x: [labelText],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los ' + data_question['type_course'] + ' <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1726,7 +1730,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1781,7 +1785,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1838,7 +1842,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -1893,7 +1897,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -1950,7 +1954,7 @@
                 var trace2 = {
                   x: data_question['display_name_historical'],
                   y: data_question['average_question_historical'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -2005,7 +2009,7 @@
               var trace3 = {
                 x: data_question['display_name_historical'],
                 y: data_question['average_question_historical'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',
@@ -2063,7 +2067,7 @@
                 var trace2 = {
                   x: ['MQI'],
                   y: data_question['mqi_old'],
-                  name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                  name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
@@ -2118,7 +2122,7 @@
               var trace3 = {
                 x: ['MQI'],
                 y: data_question['mqi_old'],
-                name: 'Promedio (%) historico de todos los MOOCs <br> en ' + data_question['language_course'] ,
+                name: 'Promedio (%) historico de todos los '+ data_question['type_course'] +'s <br> en ' + data_question['language_course'] ,
                 type: 'bar',
                 hoverinfo: 'none',
                 textposition: 'auto',

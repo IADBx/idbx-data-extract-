@@ -140,6 +140,7 @@ class CourseController extends Controller
         $course_collection=collect($course);
         $start_date=$course_collection->first()->start_date;
         $language_course=$course_collection->first()->language;
+        $type_course=$course_collection->first()->type;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
 
@@ -258,7 +259,7 @@ class CourseController extends Controller
 
 
 
-        return response()->json(['mqi'=>$mqi_data,'mqi_group'=>$mqi_data_group,'mqi_old'=>$mqi_data_old,'old_data'=>$old_data,'mqi_year'=>$mqi_data_year,'year_data'=>$year_data,'edition_course'=>$edition_course,'language_course'=>$language_course,'year_course'=>$year_course]);
+        return response()->json(['mqi'=>$mqi_data,'mqi_group'=>$mqi_data_group,'mqi_old'=>$mqi_data_old,'old_data'=>$old_data,'mqi_year'=>$mqi_data_year,'year_data'=>$year_data,'edition_course'=>$edition_course,'language_course'=>$language_course,'year_course'=>$year_course, 'type_course'=>$type_course]);
 
     }
 
@@ -336,6 +337,7 @@ class CourseController extends Controller
         $answers_collection=collect($answers);  
         $edition_course=$answers_collection->first()->edition;
         $language_course=$answers_collection->first()->language;
+        $type_course=$answers_collection->first()->type;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -423,7 +425,7 @@ class CourseController extends Controller
             array_push($answers_average_question_historical,round($answer->average_group,2));
         }  
 
-        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course, 'language_course'=>$language_course]);
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course, 'language_course'=>$language_course, 'type_course'=>$type_course]);
 
     }
 
@@ -445,6 +447,7 @@ class CourseController extends Controller
         $answers_collection=collect($answers);  
         $edition_course=$answers_collection->first()->edition;
         $language_course=$answers_collection->first()->language;
+        $type_course=$answers_collection->first()->type;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -536,7 +539,7 @@ class CourseController extends Controller
             $total_gain_historical=round($answer->average_group,2);
         }  
 
-        return response()->json(['total_gain'=>$total_gain,'total_gain_historical'=>$total_gain_historical,'display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course,'language_course'=>$language_course]);
+        return response()->json(['total_gain'=>$total_gain,'total_gain_historical'=>$total_gain_historical,'display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course,'language_course'=>$language_course,'type_course'=>$type_course]);
 
     }
 
@@ -863,7 +866,7 @@ class CourseController extends Controller
         } 
 
         
-        return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data,'year_data'=>$year_data,'display_name_year'=>$answers_display_name_year,'total_year'=>$answers_total_year,'percentage_year'=>$answers_percentage_year, 'language_course'=>$language_course]);
+        return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data,'year_data'=>$year_data,'display_name_year'=>$answers_display_name_year,'total_year'=>$answers_total_year,'percentage_year'=>$answers_percentage_year, 'language_course'=>$language_course,'type_course'=>$type_course]);
         
     }
 
@@ -887,6 +890,7 @@ class CourseController extends Controller
         $answers_collection=collect($answers);  
         $edition_course=$answers_collection->first()->edition;
         $language_course=$answers_collection->first()->language;
+        $type_course=$answers_collection->first()->type;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -976,7 +980,7 @@ class CourseController extends Controller
             array_push($answers_average_question_historical,round($answer->average_group,2));
         }  
 
-        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course,'language_course'=>$language_course]);
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course,'language_course'=>$language_course,'type_course'=>$type_course]);
         
     }
 
@@ -1000,6 +1004,7 @@ class CourseController extends Controller
         $answers_collection=collect($answers);  
         $edition_course=$answers_collection->first()->edition;
         $language_course=$answers_collection->first()->language;
+        $type_course=$answers_collection->first()->type;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -1088,7 +1093,7 @@ class CourseController extends Controller
             array_push($answers_average_question_historical,round($answer->average_group,2));
         }  
 
-        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course, 'language_course'=>$language_course]);
+        return response()->json(['display_name_historical'=>$answers_display_name_historical,'average_question_historical'=>$answers_average_question_historical,'display_name_old'=>$answers_display_name_old,'average_question_old'=>$answers_average_question_old,'sample_survey'=>$sample_survey,'display_name'=>$answers_display_name,'average_question'=>$answers_average_question,'total_sample'=>$total_sample,'old_data'=>$old_data,'edition_course'=>$edition_course, 'language_course'=>$language_course,'type_course'=>$type_course]);
         
     }
     
