@@ -2081,7 +2081,7 @@
                   type: 'bar',
                   hoverinfo: 'none',
                   textposition: 'auto',
-                  text: data_question['mqi_old'],
+                  text: data_question['mqi_year'],
                   };                  
 
               var data = [trace1,trace3, trace2];
