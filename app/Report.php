@@ -11,6 +11,6 @@ class Report extends Model
     public $keyType = 'string';
     protected $connection = 'pgsql';
     protected $fillable = [
-        'course_id','name'
+        'course_id','name','olp'
     ];
 }

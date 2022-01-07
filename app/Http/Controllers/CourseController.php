@@ -38,7 +38,7 @@ class CourseController extends Controller
         $report=Report::where('course_id','=',$id)->firstOrFail();                
         
         #dd(substr($report->start_date,0,4));
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->where('type','=',trim($report->type))->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where( DB::raw('EXTRACT(YEAR FROM start_date)'), '=', substr($report->start_date,0,4))->where('start_date','<=',$report->start_date)->where('type','=',trim($report->type))->where('olp','=',trim($report->olp))->get();
         $versions_total = $report_all->count();
         $registered=round($report_all->avg('registrado'));
         $registered_total=round($report_all->sum('registrado'));
@@ -63,7 +63,7 @@ class CourseController extends Controller
         $participants=0;
         $certificates=0;
         $verified=0;
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->where('type','=',trim($report->type))->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<",$report->start_date)->where('type','=',trim($report->type))->where('olp','=',trim($report->olp))->get();
 
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
@@ -90,7 +90,7 @@ class CourseController extends Controller
         $participants=0;
         $certificates=0;
         $verified=0;
-        $report_type = Report::where('type','=',$report->type)->where('language','=',$report->language)->where('end_date',"<=",$report->end_date)->get();
+        $report_type = Report::where('type','=',$report->type)->where('language','=',$report->language)->where('end_date',"<=",$report->end_date)->where('olp','=',trim($report->olp))->get();
         $registered=round($report_type->avg('registrado'));
         $registered_in_date=round($report_type->avg('in_date'));
         $participant_in_date=round($report_type->avg('in_date_participant'));
@@ -104,7 +104,7 @@ class CourseController extends Controller
         $registered_in_date=0;
         $participants=0;
         $certificates=0;              
-        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->where('type','=',trim($report->type))->get();
+        $report_all = Report::where('group_name','=',trim($report->group_name))->where('end_date',"<=",$report->end_date)->where('type','=',trim($report->type))->where('olp','=',trim($report->olp))->get();
         $registered=round($report_all->avg('registrado'));
         $registered_in_date=round($report_all->avg('in_date'));
         $participant_in_date=round($report_all->avg('in_date_participant'));
@@ -141,6 +141,7 @@ class CourseController extends Controller
         $start_date=$course_collection->first()->start_date;
         $language_course=$course_collection->first()->language;
         $type_course=$course_collection->first()->type;
+        $olp=$course_collection->first()->olp;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
 
@@ -249,6 +250,7 @@ class CourseController extends Controller
         (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
         and trim(c.type)=
         trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and c.olp=".$olp."
         and c.studio_id_1 not in('".$request->get('course_id')."')";
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
@@ -328,16 +330,19 @@ class CourseController extends Controller
         $answers_average_question_historical=[];
         $mqi_data_group=[];
         $request->get('question'); 
-        $sql ="select * from control_panel_course_report_satisfaction as d
+        $sql ="select d.*,tq.*,m.language as language_metadata,m.type as type_metadata,m.edition as edition_metadata,m.olp from control_panel_course_report_satisfaction as d
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=d.course_id)
         where d.course_id='".$request->get('course_id')."'
         and d.question_id='".$request->get('question')."'
         order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
-        $edition_course=$answers_collection->first()->edition;
-        $language_course=$answers_collection->first()->language;
-        $type_course=$answers_collection->first()->type;
+        $edition_course=$answers_collection->first()->edition_metadata;
+        $language_course=$answers_collection->first()->language_metadata;
+        $type_course=$answers_collection->first()->type_metadata;
+        $language_course_original = $language_course;
+        $olp=$answers_collection->first()->olp;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -402,13 +407,12 @@ class CourseController extends Controller
         INNER JOIN metadata_courses c on(d.id=c.id)
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
         where
-        trim(c.language)=
-        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        trim(c.language)=trim('".$language_course_original."')
         and c.end_date <= 
         (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
-        and trim(c.type)=
-        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.type)=trim('".$type_course."')
         and c.studio_id_1 not in('".$request->get('course_id')."')
+        and c.olp=".$olp."
         and d.question_id in (
         select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
         )
@@ -438,16 +442,19 @@ class CourseController extends Controller
         $answers_average_question_historical=[];
         $mqi_data_group=[];
         $request->get('question'); 
-        $sql ="select * from control_panel_course_report_satisfaction as d
+        $sql ="select d.*,tq.*,m.language as language_metadata,m.type as type_metadata,m.edition as edition_metadata,m.olp from control_panel_course_report_satisfaction as d
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=d.course_id)
         where d.course_id='".$request->get('course_id')."'
         and d.question_id='".$request->get('question')."'
         order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
-        $edition_course=$answers_collection->first()->edition;
-        $language_course=$answers_collection->first()->language;
-        $type_course=$answers_collection->first()->type;
+        $edition_course=$answers_collection->first()->edition_metadata;
+        $language_course=$answers_collection->first()->language_metadata;
+        $type_course=$answers_collection->first()->type_metadata;
+        $language_course_original = $language_course;
+        $olp=$answers_collection->first()->olp;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -514,16 +521,15 @@ class CourseController extends Controller
         INNER JOIN metadata_courses c on(d.id=c.id)
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
         where
-        trim(c.language)=
-        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        trim(c.language)=trim('".$language_course_original."')
         and c.end_date <= 
         (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
         and trim(c.type)=
-        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
-        and c.studio_id_1 not in('".$request->get('course_id')."')
+        trim('".$type_course."')
         and d.question_id in (
         select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
         )
+        and c.olp=".$olp."
         and d.question_id='".$request->get('question')."'
         GROUP BY tq.question_id,tq.display_name_es
         ORDER BY tq.question_id asc";
@@ -552,8 +558,11 @@ class CourseController extends Controller
         $course = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course);
         $language_course=$course_collection->first()->language;
+        $language_course_original=$course_collection->first()->language;
         $edition_course=$course_collection->first()->edition;
         $start_date=$course_collection->first()->start_date;
+        $olp=$course_collection->first()->olp;
+        $course_id=$course_collection->first()->studio_id_1;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
         $type_course=$course_collection->first()->type;
@@ -811,6 +820,12 @@ class CourseController extends Controller
             $old_data= 0;
         }
 
+
+
+        //******************************************** //
+        // Begin Historical Data x Type x Language //
+        //*********************************************//
+
         $sql="Select display_name,sum(total) as total
         from
         ((select sum(d.total) as total,ta.display_name_es as display_name 
@@ -819,12 +834,11 @@ class CourseController extends Controller
         INNER JOIN control_panel_course_template_question_survey tq on(ta.question_id=tq.id and tq.poll='1')
         INNER JOIN metadata_courses c on(d.course_id=c.id)
         where d.poll=1
-        and trim(c.language)=trim((select language from metadata_courses 
-        where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.language)=trim('".$language_course_original."')
+        and c.olp=".$olp."
         and c.end_date <= (select end_date from metadata_courses 
         where studio_id_1='".$request->get('course_id')."')
-        and trim(c.type)=trim((select type from metadata_courses 
-            where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.type)=trim('".$type_course."')
         and tq.question_id='".$request->get('question')."'
         and c.studio_id_1 not in('".$request->get('course_id')."')
         GROUP BY ta.id,ta.display_name_es
@@ -841,12 +855,11 @@ class CourseController extends Controller
         INNER JOIN control_panel_course_chapters ch on(ch.module_id=s.chapter_id)
         INNER JOIN metadata_courses c on(ch.course_id=c.studio_id_1)
         where  q.question_id='".$request->get('question')."' and v.poll='1'
-        and trim(c.language)=trim((select language from metadata_courses 
-            where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.language)=trim('".$language_course_original."')
+        and c.olp=".$olp."
         and c.end_date <= (select end_date from metadata_courses 
             where studio_id_1='".$request->get('course_id')."')
-        and trim(c.type)=trim((select type from metadata_courses 
-            where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.type)=trim('".$type_course."')
         and c.studio_id_1 not in('".$request->get('course_id')."')
         GROUP BY ta.id,ta.display_name_es
         ORDER BY ta.id asc)) as data
@@ -865,6 +878,10 @@ class CourseController extends Controller
             array_push($answers_percentage_historical,round(($answer->total/$sample)*100,2));
         } 
 
+        //******************************************** //
+        // End Historical Data x Type x Language //
+        //*********************************************//
+
         
         return response()->json(['sample_survey'=>$sample_survey,'display_name_historical'=>$answers_display_name_historical,'total_historical'=>$answers_total_historical,'percentage_historical'=>$answers_percentage_historical,'edition_course'=>$edition_course,'year_course'=>$year_course,'display_name_old'=>$answers_display_name_old,'total_old'=>$answers_total_old,'percentage_old'=>$answers_percentage_old,'display_name'=>$answers_display_name,'total'=>$answers_total,'percentage'=>$answers_percentage,'old_data'=>$old_data,'year_data'=>$year_data,'display_name_year'=>$answers_display_name_year,'total_year'=>$answers_total_year,'percentage_year'=>$answers_percentage_year, 'language_course'=>$language_course,'type_course'=>$type_course]);
         
@@ -880,17 +897,20 @@ class CourseController extends Controller
         $old_data= 0;
         $mqi_data_group=[];
         $request->get('question'); 
-        $sql ="select * from control_panel_course_report_satisfaction as d
+        $sql ="select d.*,tq.*,m.language as language_metadata,m.type as type_metadata,m.edition as edition_metadata,m.olp from control_panel_course_report_satisfaction as d
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=d.course_id)
         where d.course_id='".$request->get('course_id')."'
         and d.question_parent='".$request->get('question')."'
         and tq.poll='3'
         order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
-        $edition_course=$answers_collection->first()->edition;
-        $language_course=$answers_collection->first()->language;
-        $type_course=$answers_collection->first()->type;
+        $edition_course=$answers_collection->first()->edition_metadata;
+        $language_course=$answers_collection->first()->language_metadata;
+        $type_course=$answers_collection->first()->type_metadata;
+        $language_course_original = $language_course;
+        $olp=$answers_collection->first()->olp;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -952,21 +972,26 @@ class CourseController extends Controller
                 array_push($answers_average_question_old,round($answer->average_group,2));
             }   
         }
+
+
+        //******************************************** //
+        // Begin Historical Data x Type x Language //
+        //*********************************************//
+
         $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
         INNER JOIN metadata_courses c on(d.id=c.id)
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
         where
-        trim(c.language)=
-        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        trim(c.language)=trim('".$language_course_original."')
         and c.end_date <= 
         (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
-        and trim(c.type)=
-        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.type)=trim('".$type_course."')
         and c.studio_id_1 not in('".$request->get('course_id')."')
         and d.question_id in (
         select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
         )
         and d.question_parent='".$request->get('question')."'
+        and c.olp=".$olp."
         and tq.poll='3'
         GROUP BY tq.question_id,tq.display_name_es
         ORDER BY tq.question_id asc";
@@ -994,17 +1019,20 @@ class CourseController extends Controller
         $answers_average_question_historical=[]; 
         $mqi_data_group=[];
         $request->get('question'); 
-        $sql ="select * from control_panel_course_report_satisfaction as d
+        $sql ="select d.*,tq.*,m.language as language_metadata,m.type as type_metadata,m.edition as edition_metadata,m.olp from control_panel_course_report_satisfaction as d
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
+        INNER JOIN metadata_courses m on(m.studio_id_1=d.course_id)
         where d.course_id='".$request->get('course_id')."'
         and d.question_id='".$request->get('question')."'
         and tq.poll='3'
         order by tq.display_name_es desc";
         $answers = DB::connection('pgsql')->select($sql);
         $answers_collection=collect($answers);  
-        $edition_course=$answers_collection->first()->edition;
-        $language_course=$answers_collection->first()->language;
-        $type_course=$answers_collection->first()->type;
+        $edition_course=$answers_collection->first()->edition_metadata;
+        $language_course=$answers_collection->first()->language_metadata;
+        $type_course=$answers_collection->first()->type_metadata;
+        $language_course_original = $language_course;
+        $olp=$answers_collection->first()->olp;
         $answers_display_name=[];
         $answers_total=[];
         $answers_percentage=[];
@@ -1065,17 +1093,24 @@ class CourseController extends Controller
                 array_push($answers_average_question_old,round($answer->average_group,2));
             }   
         }
+
+
+        
+        //******************************************** //
+        // Begin Historical Data x Type x Language //
+        //*********************************************//
+
+
         $sql="select tq.display_name_es, avg(CAST(d.average_question AS FLOAT)) as average_group from control_panel_course_report_satisfaction as d
         INNER JOIN metadata_courses c on(d.id=c.id)
         INNER JOIN control_panel_course_template_question_survey tq on(tq.question_id = d.question_id)
         where
-        trim(c.language)=
-        trim((select language from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        trim(c.language)=trim('".$language_course_original."')
         and c.end_date <= 
         (select end_date from metadata_courses where studio_id_1='".$request->get('course_id')."')
-        and trim(c.type)=
-        trim((select type from metadata_courses where studio_id_1='".$request->get('course_id')."'))
+        and trim(c.type)=trim('".$type_course."')
         and c.studio_id_1 not in('".$request->get('course_id')."')
+        and c.olp=".$olp."
         and d.question_id in (
         select question_id from control_panel_course_report_satisfaction where course_id='".$request->get('course_id')."'
         )
