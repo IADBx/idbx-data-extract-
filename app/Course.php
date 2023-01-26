@@ -11,7 +11,7 @@ class Course extends Model
     public $keyType = 'string';
     protected $connection = 'pgsql';
     protected $fillable = [
-        'name', 'studio_id_1','is_active',
+        'name', 'studio_id_1','is_active','start_date'
     ];
 
     public function chapters()
