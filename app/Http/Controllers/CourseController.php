@@ -1225,13 +1225,15 @@ class CourseController extends Controller
     public function structureSurveyFinal($id,$survey)
     {
         $course = Course::where('studio_id_1', $id)->first();
-        //$sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
-        //$course_ = DB::connection('pgsql')->select($sql);
-        $course_collection=collect($course);
 
+        //***Con esto sacamos el año *//
+        $sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
+        $course_list = DB::connection('pgsql')->select($sql);
+        $course_collection=collect($course_list);
         $start_date=$course_collection->first()->start_date;
         $time = strtotime($start_date);
         $year_course = date('Y',$time);
+        //*** *//
 
         $is_spoc=0;
 
