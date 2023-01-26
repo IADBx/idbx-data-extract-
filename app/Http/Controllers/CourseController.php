@@ -1227,7 +1227,7 @@ class CourseController extends Controller
         $course = Course::where('studio_id_1', $id)->first();
 
         //***Con esto sacamos el año *//
-        $sql="select * from metadata_courses where  studio_id_1='".$request->get('course_id')."'";
+        $sql="select * from metadata_courses where  studio_id_1='".$id."'";
         $course_list = DB::connection('pgsql')->select($sql);
         $course_collection=collect($course_list);
         $start_date=$course_collection->first()->start_date;
